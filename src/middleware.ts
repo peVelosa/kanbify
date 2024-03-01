@@ -5,6 +5,7 @@ import {
   authRoutes,
   apiAuthPrefix,
   DEFAULT_REDIRECT,
+  verifyRoute,
 } from "@/routes";
 
 const { auth } = NextAuth(authConfig);
@@ -17,8 +18,9 @@ export default auth((req) => {
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
   const isAuthApiPrefix = nextUrl.pathname.startsWith(apiAuthPrefix);
+  const isVerifyRoute = nextUrl.pathname.startsWith(verifyRoute);
 
-  if (isPublicRoute || isAuthApiPrefix) return;
+  if (isPublicRoute || isAuthApiPrefix || isVerifyRoute) return;
 
   if (isAuthRoute && !isAuth) return;
 

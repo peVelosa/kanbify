@@ -1,3 +1,9 @@
+import RegisterView from "./register-view";
+
 export default function RegisterPage() {
-  return <>register</>;
+  return (
+    <>
+      <RegisterView />
+    </>
+  );
 }

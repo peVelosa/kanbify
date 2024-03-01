@@ -67,7 +67,12 @@
 }
 
 @layer base {
+  html,
   body {
-    @apply overflow-x-hidden bg-background bg-neutral-50 text-foreground;
+    @apply h-full;
+  }
+
+  body {
+    @apply bg-background bg-neutral-50 text-foreground;
   }
 }
