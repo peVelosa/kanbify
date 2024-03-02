@@ -42,8 +42,7 @@ export default function LoginForm() {
 
   return (
     <>
-    <Suspense fallback={<h1>loading...</h1>}>
-    <Form {...form}>
+      <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
             control={form.control}
@@ -82,8 +81,6 @@ export default function LoginForm() {
           </Button>
         </form>
       </Form>
-    </Suspense>
-  
     </>
   );
 }
