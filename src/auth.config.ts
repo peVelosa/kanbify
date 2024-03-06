@@ -31,6 +31,17 @@ export default {
       },
     }),
   ],
+  callbacks: {
+    async session({ session, token, user: as }) {
+      const user = await getUserByEmail(token.email);
 
+      if (user) {
+        session.user.image = user.image;
+        session.user.id = user.id;
+      }
+
+      return { ...session };
+    },
+  },
   secret: process.env.AUTH_SECRET,
 } satisfies NextAuthConfig;

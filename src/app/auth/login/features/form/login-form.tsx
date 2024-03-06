@@ -18,7 +18,7 @@ import { TLoginSchema } from "@/app/actions/login/type";
 import { login } from "@/app/actions/login";
 import FormError from "@/app/auth/_components/form/form-error";
 import FormWarning from "@/app/auth/_components/form/form-warning";
-import { Suspense, useState } from "react";
+import { useState } from "react";
 import ResendVerificationEmail from "./resend-verification-email";
 import { useSearchParams } from "next/navigation";
 
