@@ -8,8 +8,9 @@ type newBoardProps = TCreateBoardSchema & {
 };
 
 export async function newBoard({ userId, title, description }: newBoardProps) {
+  console.log(userId, title, description)
   if (!userId || !title) return { error: "Invalid data" };
-
+  console.log('aqui dentro')
   try {
     await db.board.create({
       data: {

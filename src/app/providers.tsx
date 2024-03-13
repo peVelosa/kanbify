@@ -13,13 +13,7 @@ export default function Providers({
 }>) {
   const [queryClient] = useState(
     () =>
-      new QueryClient({
-        defaultOptions: {
-          queries: {
-            staleTime: 60 * 1000,
-          },
-        },
-      }),
+      new QueryClient(),
   );
 
   return (

@@ -9,7 +9,7 @@ export const getBoards = async (id?: string | null) => {
     return await db.board.findMany({
       where: {
         user: {
-          id,
+          id: id,
         },
       },
       select: {

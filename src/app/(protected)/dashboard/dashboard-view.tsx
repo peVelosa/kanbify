@@ -3,15 +3,10 @@
 import { useBoards } from "@/hooks/use-boards";
 import BoardCard from "./_components/board/board-card";
 import NewBoardDialog from "./_components/new-board-dialog";
-import type { TBoards } from "@/app/actions/get-boards/type";
 
-type TDashboardViewProps = {
-  initialBoards: TBoards;
-};
-
-export default function DashboardView({ initialBoards }: TDashboardViewProps) {
-  const { data: boards } = useBoards({ initialBoards });
-
+export default function DashboardView() {
+  const { data: boards } = useBoards();
+  
   return (
     <>
       <div className="container">

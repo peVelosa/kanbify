@@ -1,21 +1,18 @@
 "use client";
 
 import { getBoards } from "@/actions/get-boards";
-import { TBoards } from "@/app/actions/get-boards/type";
 import { useQuery } from "@tanstack/react-query";
-import { useSession } from "next-auth/react";
+import { useCurrentUser } from "./use-current-user";
 
-type useBoardsProps = {
-  initialBoards?: TBoards;
-};
 
-export const useBoards = ({ initialBoards }: useBoardsProps) => {
-  const { data: session } = useSession();
+export const useBoards = () => {
+  const { data:user } = useCurrentUser()
+
+  const userId = user?.id
 
   return useQuery({
     queryKey: ["boards"],
-    queryFn: () => getBoards(session?.user?.id),
-    initialData: initialBoards,
-    enabled: !session?.user?.id,
+    queryFn: () => getBoards(userId),
+    enabled: !!userId,
   });
 };

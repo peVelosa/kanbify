@@ -11,6 +11,6 @@ export const useCurrentUser = () => {
     queryKey: ["user"],
     queryFn: () => getUserById(session?.user?.id),
     initialData: session?.user,
-    enabled: !session?.user?.id,
+    enabled: !!session?.user?.id,
   });
 };

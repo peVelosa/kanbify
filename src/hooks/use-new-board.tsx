@@ -5,6 +5,7 @@ import { TCreateBoardSchema } from "@/actions/create-board/type";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCurrentUser } from "./use-current-user";
 import { useToast } from "@/components/ui/use-toast";
+import { TBoards } from "@/app/actions/get-boards/type";
 
 export default function useNewBoard() {
   const queryClient = useQueryClient();
@@ -18,11 +19,11 @@ export default function useNewBoard() {
     onMutate: (data) => {
       const previousBoards = queryClient.getQueryData(["boards"]);
 
-      queryClient.setQueryData(["boards"], (old: any) => [
+      queryClient.setQueryData(["boards"], (old:TBoards) => ([
         { ...data, id: "temp-id", _count: { collaborators: 0 } },
-        ...old,
-      ]);
-
+        ...old!,
+      ]));
+      
       return { previousBoards };
     },
     onError(error, variables, context) {
