@@ -8,9 +8,7 @@ export const getBoards = async (id?: string | null) => {
   try {
     return await db.board.findMany({
       where: {
-        user: {
-          id: id,
-        },
+        owner_id: id,
       },
       select: {
         id: true,

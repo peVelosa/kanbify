@@ -2,13 +2,10 @@
 
 import { useBoard } from "@/hooks/use-board";
 import BoardInfo from "./_components/board/board-info";
+import BoardColumn from "./_components/board/board-column";
 
-type BoardPageViewProps = {
-  initialBoard: any;
-};
-
-export default function BoardPageView({ initialBoard }: BoardPageViewProps) {
-  const { data: board } = useBoard({ initialBoard, bid: initialBoard.id });
+export default function BoardPageView() {
+  const { data: board } = useBoard();
 
   if (!board) return null;
 
@@ -22,7 +19,9 @@ export default function BoardPageView({ initialBoard }: BoardPageViewProps) {
   return (
     <>
       <BoardInfo {...info} />
-      <p>oi</p>
+      {board?.columns.map((column) => (
+        <BoardColumn key={column.id} {...column} />
+      ))}
     </>
   );
 }

@@ -1,19 +1,15 @@
 "use client";
 
 import { getBoard } from "@/actions/get-board-info";
-import { TBoardInfo } from "@/actions/get-board-info/type";
 import { useQuery } from "@tanstack/react-query";
+import { useParams } from "next/navigation";
 
-type useBoardProps = {
-  bid: string;
-  initialBoard?: TBoardInfo;
-};
+export const useBoard = () => {
+  const params = useParams() as { bid: string };
 
-export const useBoard = ({ initialBoard, bid }: useBoardProps) => {
   return useQuery({
-    queryKey: ["boards", bid],
-    queryFn: () => getBoard({ bid }),
-    initialData: initialBoard,
-    enabled: !bid,
+    queryKey: ["boards", params.bid],
+    queryFn: () => getBoard({ bid: params.bid }),
+    enabled: !!params.bid,
   });
 };
