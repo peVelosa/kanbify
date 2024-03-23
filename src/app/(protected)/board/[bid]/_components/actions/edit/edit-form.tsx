@@ -15,7 +15,7 @@ import { TEditBoardSchema } from "@/app/actions/edit-board/type";
 
 type EditFormProps = {
   onSubmit: (
-    e?: BaseSyntheticEvent<object, any, any> | undefined,
+    event?: BaseSyntheticEvent<object, any, any> | undefined,
   ) => Promise<void>;
   form: UseFormReturn<TEditBoardSchema, any, TEditBoardSchema>;
 };

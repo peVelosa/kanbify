@@ -3,7 +3,7 @@
 import { newBoard } from "@/actions/create-board";
 import { TCreateBoardSchema } from "@/actions/create-board/type";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useCurrentUser } from "./use-current-user";
+import { useCurrentUser } from "../use-current-user";
 import { useToast } from "@/components/ui/use-toast";
 import { TBoards } from "@/app/actions/get-boards/type";
 
@@ -19,25 +19,25 @@ export default function useNewBoard() {
     onMutate: (data) => {
       const previousBoards = queryClient.getQueryData(["boards"]);
 
-      queryClient.setQueryData(["boards"], (old:TBoards) => ([
+      queryClient.setQueryData(["boards"], (old: TBoards) => [
         { ...data, id: "temp-id", _count: { collaborators: 0 } },
         ...old!,
-      ]));
-      
+      ]);
+
       return { previousBoards };
     },
     onError(error, variables, context) {
       queryClient.setQueryData(["boards"], context?.previousBoards);
       toast({
         title: "Error",
-        description: "An error occurred while creating your board",
+        description: "An error occurred while editing your board",
         variant: "destructive",
       });
     },
     onSuccess: () => {
       toast({
-        title: "Board created",
-        description: "Your board has been created successfully",
+        title: "Board edited",
+        description: "Your board has been edited successfully",
         variant: "default",
       });
     },

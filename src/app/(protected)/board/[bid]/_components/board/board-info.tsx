@@ -1,8 +1,10 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { FaEdit } from "react-icons/fa";
 import EditButton from "../actions/edit/edit-button";
+import { useCollaboratorRole } from "@/hooks/use-collaborator-role";
+import { useParams } from "next/navigation";
+import AllowTo from "./allow-to";
 
 type BoardInfoProps = {
   id: string;
@@ -17,6 +19,10 @@ export default function BoardInfo({
   description,
   createdAt,
 }: BoardInfoProps) {
+  const params = useParams() as { bid: string };
+
+  const { data: collaborator } = useCollaboratorRole({ bid: params.bid });
+
   return (
     <div className="container flex items-start justify-between">
       <div>
@@ -34,10 +40,17 @@ export default function BoardInfo({
         </p>
       </div>
       <div className="space-y-4">
-        <EditButton />
-        <Button className="flex w-full" variant={"outline"}>
-          Invite
-        </Button>
+        <AllowTo allowTo={["ADMIN", "OWNER"]} currentRole={collaborator?.role}>
+          <EditButton />
+        </AllowTo>
+        <AllowTo
+          allowTo={["ADMIN", "OWNER", "EMPLOYEE"]}
+          currentRole={collaborator?.role}
+        >
+          <Button className="flex w-full" variant={"outline"}>
+            Invite
+          </Button>
+        </AllowTo>
       </div>
     </div>
   );

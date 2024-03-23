@@ -16,7 +16,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
-import useNewBoard from "@/hooks/use-new-board";
+import useNewBoard from "@/hooks/mutations/use-new-board";
 
 export default function NewBoardDialog() {
   const [isOpen, setIsOpen] = useState(false);

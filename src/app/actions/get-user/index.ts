@@ -27,13 +27,13 @@ export const getUserByEmail = async (email?: string | null) => {
   }
 };
 
-export const getUserById = async (id?: string | null) => {
-  if (!id) return null;
+export const getUserById = async (uid?: string | null) => {
+  if (!uid) return null;
 
   try {
     const user = await db.user.findUnique({
       where: {
-        id,
+        id: uid,
       },
       select: {
         id: true,
@@ -42,6 +42,32 @@ export const getUserById = async (id?: string | null) => {
         password: true,
         emailVerified: true,
         image: true,
+      },
+    });
+
+    return user;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+
+export const getCollaboratorRole = async (
+  uid?: string | null,
+  bid?: string | null,
+) => {
+  if (!uid || !bid) return null;
+  try {
+    const user = await db.collaborator.findUnique({
+      where: {
+        Unique_Collaborator_User_Board: {
+          user_id: uid,
+          board_id: bid,
+        },
+      },
+      select: {
+        id: true,
+        role: true,
       },
     });
 
