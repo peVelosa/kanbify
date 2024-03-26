@@ -2,6 +2,7 @@
 
 import { db } from "@/lib/db";
 import { TEditBoardSchema } from "./type";
+import { getRole } from "../get-role";
 
 export type editBoardProps = TEditBoardSchema & {
   bid: string | null | undefined;
@@ -43,22 +44,13 @@ export async function editBoard({
     if (titleExists && titleChanged)
       return { error: "Title already exists. Please choose another title." };
 
-    const collaborator = await db.collaborator.findUnique({
-      where: {
-        Unique_Collaborator_User_Board: {
-          user_id: user_id,
-          board_id: bid,
-        },
-      },
-      select: {
-        role: true,
-      },
+    const isAllowed = await getRole({
+      bid,
+      user_id,
+      desiredRole: ["OWNER", "ADMIN"],
     });
 
-    if (
-      !collaborator ||
-      (collaborator.role !== "OWNER" && collaborator.role !== "ADMIN")
-    )
+    if (!isAllowed)
       return { error: "You don't have permission to edit this board" };
 
     await db.board.update({

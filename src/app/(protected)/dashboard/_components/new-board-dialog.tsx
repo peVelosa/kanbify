@@ -33,15 +33,21 @@ export default function NewBoardDialog() {
   const { mutate } = useNewBoard();
 
   const onSubmit = async (data: TCreateBoardSchema) => {
-    // setIsOpen(false);
-    // mutate(data);
-    // form.reset();
+    setIsOpen(false);
     mutate(data);
   };
 
+  const resetForm = () => form.reset();
+
   return (
     <>
-      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <Dialog
+        open={isOpen}
+        onOpenChange={(e) => {
+          setIsOpen(e);
+          resetForm();
+        }}
+      >
         <DialogTrigger asChild>
           <Button
             className="bg-emerald-600 font-semibold tracking-wider hover:bg-emerald-500"
@@ -84,7 +90,11 @@ export default function NewBoardDialog() {
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="ml-auto block">
+              <Button
+                type="submit"
+                className="ml-auto block"
+                disabled={form.formState.isSubmitting}
+              >
                 Create
               </Button>
             </form>
