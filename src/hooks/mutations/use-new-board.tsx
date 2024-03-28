@@ -19,10 +19,20 @@ export default function useNewBoard() {
     onMutate: (data) => {
       const previousBoards = queryClient.getQueryData(["boards"]);
 
-      queryClient.setQueryData(["boards"], (old: TBoards) => [
-        { ...data, id: "temp-id", _count: { collaborators: 0 } },
+      queryClient.setQueryData(["boards"], (old: TBoards) => ({
         ...old!,
-      ]);
+        boardsOwned: [
+          ...old?.boardsOwned!,
+          {
+            id: "temp-id",
+            title: data.title,
+            description: data.description,
+            _count: {
+              collaborators: 0,
+            },
+          },
+        ],
+      }));
 
       return { previousBoards };
     },
@@ -36,8 +46,8 @@ export default function useNewBoard() {
     },
     onSuccess: () => {
       toast({
-        title: "Board edited",
-        description: "Your board has been edited successfully",
+        title: "Board created",
+        description: "Your board has been created successfully",
         variant: "default",
       });
     },

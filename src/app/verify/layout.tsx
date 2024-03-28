@@ -1,4 +1,4 @@
-export default function RootLayout({
+export default function VerifyLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

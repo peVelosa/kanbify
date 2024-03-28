@@ -64,14 +64,15 @@ const DeleteProject = () => {
               value={confirmDeletion}
             />
           </div>
-          <DialogFooter>
-            <Button variant={"default"} onClick={handleClose}>
+          <DialogFooter className="gap-2 sm:gap-1">
+            <Button variant={"default"} onClick={handleClose} className="block">
               Cancel
             </Button>
             <Button
               variant={"destructive"}
-              // disabled={confirmDeletion !== "delete my project"}
+              disabled={confirmDeletion !== "delete my project"}
               onClick={handleDelete}
+              className="block"
             >
               Delete
             </Button>

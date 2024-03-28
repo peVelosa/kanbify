@@ -27,7 +27,10 @@ const useDeleteBoard = ({ bid }: useDeleteBoardProps) => {
 
       queryClient.setQueryData(
         ["boards"],
-        (old: TBoards): TBoards => [...old!].filter((b) => b.id !== bid),
+        (old: TBoards): TBoards => ({
+          ...old!,
+          boardsOwned: [...old?.boardsOwned!].filter((b) => b.id !== bid),
+        }),
       );
 
       return { previousBoards };

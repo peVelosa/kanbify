@@ -3,6 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
 import BoardHeader from "./board-header";
 import SkeletonCard from "./skeleton-card";
+import { useCollaboratorRole } from "@/hooks/use-collaborator-role";
 
 export default function BoardCard({
   id,
@@ -10,6 +11,7 @@ export default function BoardCard({
   description,
   _count: { collaborators },
 }: TBoard) {
+  const { data: role } = useCollaboratorRole({ bid: id });
   const routes = useRouter();
 
   const handleBoardClick = () => {
@@ -25,9 +27,14 @@ export default function BoardCard({
     >
       <BoardHeader title={title} description={description} />
       <CardContent>
-        <p className="text-sm text-gray-600">
-          <span className="font-bold">Collaborators</span>: {collaborators}
-        </p>
+        <div className="space-y-2 text-sm text-gray-600">
+          <p>
+            <span className="font-bold">Collaborators</span>: {collaborators}
+          </p>
+          <p>
+            <span className="font-bold">Role</span>: {role?.role}
+          </p>
+        </div>
       </CardContent>
     </Card>
   );

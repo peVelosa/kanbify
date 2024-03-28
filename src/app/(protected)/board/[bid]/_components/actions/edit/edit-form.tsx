@@ -56,7 +56,7 @@ const EditForm = ({ onClick }: EditFormProps) => {
   return (
     <>
       <Form {...form}>
-        <form onSubmit={onSubmit} className="space-y-8">
+        <form className="space-y-8">
           <FormField
             control={form.control}
             name="title"
@@ -86,25 +86,26 @@ const EditForm = ({ onClick }: EditFormProps) => {
               </FormItem>
             )}
           />
-          <AllowTo allowTo={["OWNER"]}>
-            <DeleteProjectForm />
-          </AllowTo>
-          <div className="flex items-center justify-end gap-4">
-            <Button type="button" variant={"outline"} onClick={onClick}>
-              Cancel
-            </Button>
-            <Button
-              type="submit"
-              disabled={
-                form.formState.isSubmitting ||
-                (title === board?.title && description === board?.description)
-              }
-            >
-              Save
-            </Button>
-          </div>
         </form>
       </Form>
+      <AllowTo allowTo={["OWNER"]}>
+        <DeleteProjectForm />
+      </AllowTo>
+      <div className="flex items-center justify-end gap-4">
+        <Button type="button" variant={"outline"} onClick={onClick}>
+          Cancel
+        </Button>
+        <Button
+          type="submit"
+          disabled={
+            form.formState.isSubmitting ||
+            (title === board?.title && description === board?.description)
+          }
+          onClick={onSubmit}
+        >
+          Save
+        </Button>
+      </div>
     </>
   );
 };

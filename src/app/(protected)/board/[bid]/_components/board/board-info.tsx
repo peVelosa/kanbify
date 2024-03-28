@@ -1,8 +1,8 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import EditButton from "../actions/edit/edit-button";
+import EditButton from "../actions/edit/edit";
 import AllowTo from "./allow-to";
+import Invite from "../actions/invite/invite";
 
 type BoardInfoProps = {
   id: string;
@@ -34,14 +34,8 @@ export default function BoardInfo({
         </p>
       </div>
       <div className="space-y-4">
-        <AllowTo allowTo={["ADMIN", "OWNER"]}>
-          <EditButton />
-        </AllowTo>
-        <AllowTo allowTo={["ADMIN", "OWNER", "EMPLOYEE"]}>
-          <Button className="flex w-full" variant={"outline"}>
-            Invite
-          </Button>
-        </AllowTo>
+        <EditButton />
+        <Invite />
       </div>
     </div>
   );
