@@ -1,10 +1,12 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  schemas  = ["kanbify"]
 }
 
 model Account {
@@ -24,6 +26,7 @@ model Account {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+  @@schema("kanbify")
 }
 
 model User {
@@ -40,6 +43,8 @@ model User {
 
   boards         Board[]
   collaborations Collaborator[]
+
+  @@schema("kanbify")
 }
 
 model Board {
@@ -55,6 +60,8 @@ model Board {
 
   columns       Column[]
   collaborators Collaborator[]
+
+  @@schema("kanbify")
 }
 
 enum ROLE {
@@ -62,6 +69,8 @@ enum ROLE {
   ADMIN
   EMPLOYEE
   VISIT
+
+  @@schema("kanbify")
 }
 
 model Collaborator {
@@ -81,6 +90,7 @@ model Collaborator {
   comments Comment[]
 
   @@unique([user_id, board_id], name: "Unique_Collaborator_User_Board")
+  @@schema("kanbify")
 }
 
 model Column {
@@ -95,6 +105,8 @@ model Column {
   order Int
 
   cards Card[]
+
+  @@schema("kanbify")
 }
 
 model Card {
@@ -113,6 +125,8 @@ model Card {
 
   tasks   Task[]
   Comment Comment[]
+
+  @@schema("kanbify")
 }
 
 model Task {
@@ -128,6 +142,8 @@ model Task {
 
   title String
   done  Boolean @default(false)
+
+  @@schema("kanbify")
 }
 
 model Comment {
@@ -141,6 +157,8 @@ model Comment {
   assign_to_id String
 
   body String
+
+  @@schema("kanbify")
 }
 
 model VerificationRequest {
@@ -152,6 +170,7 @@ model VerificationRequest {
   updatedAt  DateTime @updatedAt
 
   @@unique([identifier, token])
+  @@schema("kanbify")
 }
 
 model Invite {
@@ -163,4 +182,5 @@ model Invite {
   board_id    String @unique
 
   @@unique([board_id, id])
+  @@schema("kanbify")
 }
