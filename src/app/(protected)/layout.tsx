@@ -1,10 +1,8 @@
-import { Metadata, ResolvingMetadata } from "next";
+import { Metadata } from "next";
 import Navbar from "./_components/navbar";
 import { auth } from "@/auth";
 
-export async function generateMetadata(
-  parent: ResolvingMetadata,
-): Promise<Metadata> {
+export async function generateMetadata(): Promise<Metadata> {
   const user = await auth();
 
   return {
