@@ -20,14 +20,14 @@ import {
   RegexUpperCase,
   RegisterSchema,
 } from "@/actions/register/schema";
-import PasswordInput from "@/app/auth/_components/form/password-input";
+import PasswordInput from "@/app/(pages)/auth/_components/form/password-input";
 import { useEffect, useState } from "react";
 import Requirements from "./requirements";
 import { TRegisterSchema } from "@/actions/register/type";
 import { register } from "@/actions/register";
-import FormError from "@/app/auth/_components/form/form-error";
-import FormSuccess from "@/app/auth/_components/form/form-success";
-import FormWarning from "@/app/auth/_components/form/form-warning";
+import FormError from "@/app/(pages)/auth/_components/form/form-error";
+import FormSuccess from "@/app/(pages)/auth/_components/form/form-success";
+import FormWarning from "@/app/(pages)/auth/_components/form/form-warning";
 
 export default function RegisterForm() {
   const [message, setMessage] = useState<any>({ error: "", success: "" });
@@ -77,9 +77,7 @@ export default function RegisterForm() {
               <FormControl>
                 <Input placeholder="John Doe" {...field} />
               </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
+              <FormDescription>This is your public display name.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -129,13 +127,7 @@ export default function RegisterForm() {
         <FormError error={message?.error} />
         <FormSuccess success={message?.success} />
         <FormWarning warning={message?.warning} />
-        <Button
-          type="submit"
-          className="w-full"
-          // disabled={
-          //   form.formState.isSubmitting || form.formState.isSubmitSuccessful
-          // }
-        >
+        <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
           Register
         </Button>
       </form>

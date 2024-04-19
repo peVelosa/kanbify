@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import Navbar from "@/app/(marketing)/_components/navbar";
+import Navbar from "@/app/(pages)/(marketing)/_components/navbar";
 import Link from "next/link";
 
 export default function HomeView() {

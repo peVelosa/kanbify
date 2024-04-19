@@ -9,10 +9,10 @@ import { verificationEmail } from "../send-emails/verification-email";
 import { getUserByEmail } from "../get-user";
 
 export async function register(values: TRegisterSchema) {
-  const validatedFields = validateFields<
-    TRegisterSchema,
-    typeof RegisterSchema
-  >(values, RegisterSchema);
+  const validatedFields = validateFields<TRegisterSchema, typeof RegisterSchema>(
+    values,
+    RegisterSchema,
+  );
 
   if (!validatedFields) {
     return null;
@@ -24,6 +24,9 @@ export async function register(values: TRegisterSchema) {
 
   if (existingUser) {
     if (!existingUser.emailVerified) {
+      await verificationEmail({
+        email,
+      });
       return { warning: "Verification email sent" };
     }
     return { error: "User already exists" };

@@ -12,12 +12,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import PasswordInput from "@/app/auth/_components/form/password-input";
+import PasswordInput from "@/app/(pages)/auth/_components/form/password-input";
 import { LoginSchema } from "@/app/actions/login/schema";
 import { TLoginSchema } from "@/app/actions/login/type";
 import { login } from "@/app/actions/login";
-import FormError from "@/app/auth/_components/form/form-error";
-import FormWarning from "@/app/auth/_components/form/form-warning";
+import FormError from "@/app/(pages)/auth/_components/form/form-error";
+import FormWarning from "@/app/(pages)/auth/_components/form/form-warning";
 import { useState } from "react";
 import ResendVerificationEmail from "./resend-verification-email";
 import { useSearchParams } from "next/navigation";
@@ -54,10 +54,7 @@ export default function LoginForm() {
                   <Input placeholder="john.doe@email.com" {...field} />
                 </FormControl>
                 <FormMessage />
-                <ResendVerificationEmail
-                  warning={message?.warning}
-                  email={field.value}
-                />
+                <ResendVerificationEmail warning={message?.warning} email={field.value} />
               </FormItem>
             )}
           />
@@ -76,7 +73,7 @@ export default function LoginForm() {
           />
           <FormError error={message?.error} />
           <FormWarning warning={message?.warning} />
-          <Button type="submit" className="w-full">
+          <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
             Login
           </Button>
         </form>

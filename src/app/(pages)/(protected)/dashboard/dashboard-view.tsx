@@ -23,9 +23,17 @@ export default function DashboardView() {
         </TabsList>
         <section className="mt-4 grid grid-cols-[repeat(auto-fill_,minmax(250px_,1fr))] gap-4">
           <TabsContent value="owned">
+            {boards?.boardsOwned?.length === 0 && (
+              <p className="text-sm">
+                You don&rsquo;t have any boards yet. Create a new board to get started.
+              </p>
+            )}
             {boards?.boardsOwned?.map((board) => <BoardCard key={board.id} {...board} />)}
           </TabsContent>
           <TabsContent value="collaboration">
+            {boards?.boardsCollaborated?.length === 0 && (
+              <p className="text-sm">You are not collaborating on any boards.</p>
+            )}
             {boards?.boardsCollaborated?.map((board) => <BoardCard key={board.id} {...board} />)}
           </TabsContent>
         </section>
