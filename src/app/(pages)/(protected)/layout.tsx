@@ -18,6 +18,7 @@ export async function generateMetadata(): Promise<Metadata> {
     publisher: "Pedro Velosa",
   };
 }
+
 export default function ProtectedLayout({
   children,
 }: Readonly<{

@@ -1,8 +1,8 @@
 "use client";
 
-import EditButton from "../actions/edit/edit";
+import EditButton from "../_actions/edit/edit";
 import AllowTo from "./allow-to";
-import Invite from "../actions/invite/invite";
+import Invite from "../_actions/invite/invite";
 
 type BoardInfoProps = {
   id: string;
@@ -11,19 +11,12 @@ type BoardInfoProps = {
   description: string | null | undefined;
 };
 
-export default function BoardInfo({
-  id,
-  title,
-  description,
-  createdAt,
-}: BoardInfoProps) {
+export default function BoardInfo({ id, title, description, createdAt }: BoardInfoProps) {
   return (
     <div className="container flex items-start justify-between">
       <div>
         <h1 className="text-3xl font-bold">{title}</h1>
-        <h2 className="text-xl font-semibold text-neutral-800">
-          {description}
-        </h2>
+        <h2 className="text-xl font-semibold text-neutral-800">{description}</h2>
         <p>
           Created At:{" "}
           {new Intl.DateTimeFormat("en-US", {

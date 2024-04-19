@@ -23,14 +23,10 @@ export default function DashboardView() {
         </TabsList>
         <section className="mt-4 grid grid-cols-[repeat(auto-fill_,minmax(250px_,1fr))] gap-4">
           <TabsContent value="owned">
-            {boards?.boardsOwned?.map((board) => (
-              <BoardCard key={board.id} {...board} />
-            ))}
+            {boards?.boardsOwned?.map((board) => <BoardCard key={board.id} {...board} />)}
           </TabsContent>
           <TabsContent value="collaboration">
-            {boards?.boardsCollaborated?.map((board) => (
-              <BoardCard key={board.id} {...board} />
-            ))}
+            {boards?.boardsCollaborated?.map((board) => <BoardCard key={board.id} {...board} />)}
           </TabsContent>
         </section>
       </Tabs>

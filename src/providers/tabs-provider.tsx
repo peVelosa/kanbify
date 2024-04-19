@@ -19,7 +19,7 @@ const TabsProvider = ({ children, defaultActive }: TabsProviderProps) => {
     if (defaultActive) {
       setActiveTab(defaultActive);
     }
-  }, []);
+  }, [defaultActive]);
 
   const handleChangeTab = (tabValue: string) => {
     setActiveTab(tabValue);

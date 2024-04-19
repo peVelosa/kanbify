@@ -19,9 +19,7 @@ export default function BoardPageView() {
   return (
     <>
       <BoardInfo {...info} />
-      {board?.columns.map((column) => (
-        <BoardColumn key={column.id} {...column} />
-      ))}
+      {board?.columns.map((column) => <BoardColumn key={column.id} {...column} />)}
     </>
   );
 }

@@ -48,10 +48,7 @@ const EditForm = ({ onClick }: EditFormProps) => {
     });
   });
 
-  const [title, description] = [
-    form.getValues("title"),
-    form.getValues("description"),
-  ];
+  const [title, description] = [form.getValues("title"), form.getValues("description")];
 
   return (
     <>
@@ -77,10 +74,7 @@ const EditForm = ({ onClick }: EditFormProps) => {
               <FormItem>
                 <FormLabel>Description</FormLabel>
                 <FormControl>
-                  <Textarea
-                    placeholder="Description of your project"
-                    {...field}
-                  />
+                  <Textarea placeholder="Description of your project" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

@@ -5,12 +5,7 @@ import BoardHeader from "./board-header";
 import SkeletonCard from "./skeleton-card";
 import { useCollaboratorRole } from "@/hooks/use-collaborator-role";
 
-export default function BoardCard({
-  id,
-  title,
-  description,
-  _count: { collaborators },
-}: TBoard) {
+export default function BoardCard({ id, title, description, _count: { collaborators } }: TBoard) {
   const { data: role } = useCollaboratorRole({ bid: id });
   const routes = useRouter();
 
