@@ -1,18 +1,17 @@
 "use client";
 
-import { getBoards } from "@/actions/get-boards";
 import { useQuery } from "@tanstack/react-query";
 import { useCurrentUser } from "./use-current-user";
-
+import api from "@/app/api/api";
 
 export const useBoards = () => {
-  const { data:user } = useCurrentUser()
+  const { data: user } = useCurrentUser();
 
-  const userId = user?.id
+  const userId = user?.id;
 
   return useQuery({
     queryKey: ["boards"],
-    queryFn: () => getBoards(userId),
+    queryFn: () => api.getBoards(userId),
     enabled: !!userId,
   });
 };

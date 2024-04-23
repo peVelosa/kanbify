@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
-import { getBoards } from "@/actions/get-boards";
 import HydrationBoundary from "@/components/elements/hydration-boundary.";
 import DashboardPageController from "./dashboard-page-controller";
+import api from "@/app/api/api";
 
 export default async function DashboardPage() {
   const session = await auth();
@@ -10,7 +10,7 @@ export default async function DashboardPage() {
     <>
       <HydrationBoundary
         queryKey={["boards"]}
-        queryFn={() => getBoards(session?.user?.id)}
+        queryFn={() => api.getBoards(session?.user?.id)}
       >
         <DashboardPageController />
       </HydrationBoundary>
