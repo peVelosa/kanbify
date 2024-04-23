@@ -1,13 +1,13 @@
 import Link from "next/link";
 import AcceptInvite from "../_components/accept-invite";
-import { Invite } from "./page";
 import { Button } from "@/components/ui/button";
+import { Invite } from "./invite-page-controller";
 
-type InviteViewProps = {
+type InvitePageViewProps = {
   invite: Invite;
 };
 
-const InviteView = ({ invite }: InviteViewProps) => {
+const InvitePageView = ({ invite }: InvitePageViewProps) => {
   return (
     <>
       <div className="mx-auto w-fit space-y-8 text-center">
@@ -31,4 +31,4 @@ const InviteView = ({ invite }: InviteViewProps) => {
   );
 };
 
-export default InviteView;
+export default InvitePageView;
