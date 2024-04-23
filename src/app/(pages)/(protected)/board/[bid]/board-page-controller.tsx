@@ -1,5 +1,14 @@
+import { useBoard } from "@/hooks/use-board";
+import BoardPageView from "./board-page-view";
+
 const BoardPageController = () => {
-  return <div>BoardPageController</div>;
+  const { data: board } = useBoard();
+
+  return (
+    <>
+      <BoardPageView board={board} />
+    </>
+  );
 };
 
 export default BoardPageController;

@@ -1,12 +1,10 @@
 "use client";
 
-import { useBoard } from "@/hooks/use-board";
 import BoardInfo from "./_components/board/board-info";
 import BoardColumn from "./_components/board/board-column";
+import { Board } from "@/types/board";
 
-export default function BoardPageView() {
-  const { data: board } = useBoard();
-
+export default function BoardPageView({ board }: { board: Board }) {
   if (!board) return null;
 
   const info = {
@@ -19,7 +17,12 @@ export default function BoardPageView() {
   return (
     <>
       <BoardInfo {...info} />
-      {board?.columns.map((column) => <BoardColumn key={column.id} {...column} />)}
+      {board?.columns.map((column) => (
+        <BoardColumn
+          key={column.id}
+          {...column}
+        />
+      ))}
     </>
   );
 }

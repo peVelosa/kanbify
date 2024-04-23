@@ -4,8 +4,9 @@ import Tabs from "@/components/elements/tabs/tabs";
 import TabsList from "@/components/elements/tabs/tabs-list";
 import TabsTrigger from "@/components/elements/tabs/tabs-trigger";
 import TabsContent from "@/components/elements/tabs/tabs-content";
+import { Boards } from "@/types/board";
 
-export default function DashboardView({ boards }: { boards: any }) {
+export default function DashboardView({ boards }: { boards: Boards }) {
   return (
     <>
       <div className="container mb-8">
