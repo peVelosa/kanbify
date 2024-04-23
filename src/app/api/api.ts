@@ -35,6 +35,28 @@ class API {
     });
     return res.data;
   }
+
+  async editBoard({
+    bid,
+    user_id,
+    title,
+    titleChanged,
+    description,
+  }: {
+    bid: string;
+    user_id: string;
+    title: string;
+    titleChanged: boolean;
+    description: string;
+  }) {
+    const res = await axios.put(`/api/boards/${bid}`, {
+      uid: user_id,
+      title,
+      titleChanged,
+      description,
+    });
+    return res.data;
+  }
 }
 
 const api = new API();
