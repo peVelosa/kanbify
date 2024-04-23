@@ -6,6 +6,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCurrentUser } from "../use-current-user";
 import { useToast } from "@/components/ui/use-toast";
 import { TBoards } from "@/app/actions/get-boards/type";
+import api from "@/app/api/api";
 
 export default function useNewBoard() {
   const queryClient = useQueryClient();
@@ -14,8 +15,7 @@ export default function useNewBoard() {
 
   return useMutation({
     mutationKey: ["new-board"],
-    mutationFn: (data: TCreateBoardSchema) =>
-      newBoard({ ...data, userId: user?.id }),
+    mutationFn: (data: TCreateBoardSchema) => api.createBoard({ ...data, userId: user?.id! }),
     onMutate: (data) => {
       const previousBoards = queryClient.getQueryData(["boards"]);
 
