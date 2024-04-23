@@ -10,10 +10,29 @@ class API {
     return res.data;
   }
 
-  async getUser(uid?: string | null) {
-    if (!uid) return null;
+  async createBoard({
+    title,
+    description,
+    userId,
+  }: {
+    userId: string;
+    title: string;
+    description?: string;
+  }) {
+    const res = await axios.post(`/api/boards`, {
+      title,
+      description,
+      uid: userId,
+    });
+    return res.data;
+  }
 
-    const res = await axios.get(`/api/user/${uid}`);
+  async deleteBoard({ user_id }: { user_id: string }) {
+    const res = await axios.delete(`/api/boards`, {
+      data: {
+        uid: user_id,
+      },
+    });
     return res.data;
   }
 }

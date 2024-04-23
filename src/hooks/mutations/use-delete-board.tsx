@@ -1,5 +1,5 @@
-import { deleteBoard } from "@/app/actions/delete-board";
 import { TBoards } from "@/app/actions/get-boards/type";
+import api from "@/app/api/api";
 import { useToast } from "@/components/ui/use-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
@@ -16,8 +16,7 @@ const useDeleteBoard = ({ bid }: useDeleteBoardProps) => {
   const mutation = useMutation({
     mutationKey: ["delete-board", bid],
     mutationFn: async (values: { bid: string; user_id: string }) =>
-      await deleteBoard({
-        bid: values.bid,
+      await api.deleteBoard({
         user_id: values.user_id,
       }),
     onMutate: async () => {
