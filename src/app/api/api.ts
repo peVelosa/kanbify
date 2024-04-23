@@ -27,8 +27,8 @@ class API {
     return res.data;
   }
 
-  async deleteBoard({ user_id }: { user_id: string }) {
-    const res = await axios.delete(`/api/boards`, {
+  async deleteBoard({ user_id, bid }: { user_id: string; bid: string }) {
+    const res = await axios.delete(`/api/boards/${bid}`, {
       data: {
         uid: user_id,
       },

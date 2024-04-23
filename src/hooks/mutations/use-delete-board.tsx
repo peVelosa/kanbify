@@ -18,6 +18,7 @@ const useDeleteBoard = ({ bid }: useDeleteBoardProps) => {
     mutationFn: async (values: { bid: string; user_id: string }) =>
       await api.deleteBoard({
         user_id: values.user_id,
+        bid,
       }),
     onMutate: async () => {
       await queryClient.cancelQueries({ queryKey: ["boards"] });
