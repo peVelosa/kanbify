@@ -23,7 +23,7 @@ export default function BoardInfo({ id, title, description, createdAt }: BoardIn
             year: "numeric",
             month: "long",
             day: "numeric",
-          }).format(createdAt)}
+          })?.format(new Date(createdAt))}
         </p>
       </div>
       <div className="space-y-4">

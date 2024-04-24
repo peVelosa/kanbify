@@ -1,5 +1,6 @@
 import axios from "axios";
-import { Data } from "./user/[uid]/boards/route";
+import { Data as BoardsData } from "./user/[uid]/boards/route";
+import { Data as BoardData } from "./boards/[bid]/route";
 import { DefaultResponse } from "@/types/responses";
 
 class API {
@@ -8,7 +9,7 @@ class API {
   async getBoards(owner_id?: string) {
     if (!owner_id) return null;
 
-    const res = await axios.get<Data>(`/api/user/${owner_id}/boards`);
+    const res = await axios.get<BoardsData>(`/api/user/${owner_id}/boards`);
 
     const { success, data, message } = res.data;
 
@@ -85,6 +86,20 @@ class API {
     }
 
     return message;
+  }
+
+  async getBoard(bid: string) {
+    if (!bid) return null;
+
+    const res = await axios.get<BoardData>(`/api/boards/${bid}`);
+
+    const { success, data, message } = res.data;
+
+    if (!success) {
+      throw new Error(message);
+    }
+
+    return data;
   }
 }
 

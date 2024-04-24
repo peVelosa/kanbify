@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
-import { getBoard } from "@/app/actions/get-board-info";
 import BoardPageController from "./board-page-controller";
 import HydrationBoundary from "@/components/elements/hydration-boundary.";
+import api from "@/app/api/api";
 
 type BoardPageProps = {
   params: {
@@ -16,7 +16,7 @@ export default async function BoardPage({ params: { bid } }: BoardPageProps) {
     <>
       <HydrationBoundary
         queryKey={["boards", bid]}
-        queryFn={() => getBoard({ bid })}
+        queryFn={() => api.getBoard(bid)}
       >
         <BoardPageController />
       </HydrationBoundary>

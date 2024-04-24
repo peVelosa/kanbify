@@ -2,8 +2,46 @@ import { getRole } from "@/app/actions/get-role";
 import { db } from "@/lib/db";
 import { DefaultResponse } from "@/types/responses";
 import { NextResponse } from "next/server";
+import { BoardData } from "@/types/board";
 
 type Params = { params: { bid: string } };
+type Response = DefaultResponse<BoardData | null>;
+
+export async function GET(
+  request: Request,
+  { params: { bid } }: Params,
+): Promise<NextResponse<Response>> {
+  try {
+    const data = await db.board.findUnique({
+      where: { id: bid },
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        createdAt: true,
+        columns: {
+          select: {
+            id: true,
+            title: true,
+            _count: {
+              select: {
+                cards: true,
+              },
+            },
+            order: true,
+          },
+        },
+      },
+    });
+
+    return NextResponse.json({ success: true, data });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ success: false, message: "Something went wrong" });
+  }
+}
+
+export type Data = Awaited<ReturnType<typeof GET>> extends NextResponse<infer T> ? T : never;
 
 export async function PUT(
   request: Request,

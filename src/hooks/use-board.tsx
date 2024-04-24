@@ -1,6 +1,6 @@
 "use client";
 
-import { getBoard } from "@/actions/get-board-info";
+import api from "@/app/api/api";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 
@@ -9,7 +9,7 @@ export const useBoard = () => {
 
   return useQuery({
     queryKey: ["boards", params.bid],
-    queryFn: () => getBoard({ bid: params.bid }),
+    queryFn: () => api.getBoard(params.bid),
     enabled: !!params.bid,
   });
 };
