@@ -19,8 +19,7 @@ import { DeleteBoardSchema } from "@/schemas/delete-board";
 
 const DeleteProject = () => {
   const params = useParams() as { bid: string };
-  const { data: user } = useCurrentUser();
-  const { mutate } = useDeleteBoard({ bid: params.bid });
+  const { mutate } = useDeleteBoard();
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -36,7 +35,6 @@ const DeleteProject = () => {
     if (!validatedFields.success) return;
 
     mutate({
-      uid: user?.id,
       bid: params.bid,
     });
   };

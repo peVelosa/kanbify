@@ -9,8 +9,7 @@ export const useBoard = () => {
 
   const { data } = useCurrentUser();
 
-  return trpc.getBoard.useQuery({
-    uid: data?.id,
+  return trpc.board.byId.useQuery({
     bid: params.bid,
   });
 };

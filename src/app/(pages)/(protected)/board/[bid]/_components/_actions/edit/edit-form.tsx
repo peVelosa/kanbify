@@ -34,8 +34,7 @@ const EditForm = ({ onClick }: EditFormProps) => {
   const params = useParams() as { bid: string };
 
   const { data: board } = useBoard();
-  const { data: user } = useCurrentUser();
-  const { mutate } = useUpdateBoard({ bid: board!.id });
+  const { mutate } = useUpdateBoard({ bid: params.bid });
 
   const form = useForm<TEditBoardSchema>({
     resolver: zodResolver(EditBoardSchema),
@@ -52,7 +51,6 @@ const EditForm = ({ onClick }: EditFormProps) => {
       bid: params.bid,
       description: values.description,
       title: values.title,
-      uid: user?.id!,
     });
   });
 

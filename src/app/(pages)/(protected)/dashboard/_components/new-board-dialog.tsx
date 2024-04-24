@@ -35,7 +35,7 @@ export default function NewBoardDialog() {
 
   const onSubmit = async (data: TCreateBoardSchema) => {
     setIsOpen(false);
-    mutate({ uid: user?.id, ...data });
+    mutate({ ...data });
   };
 
   const resetForm = () => form.reset();

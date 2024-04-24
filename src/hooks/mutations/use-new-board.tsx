@@ -7,14 +7,14 @@ export default function useNewBoard() {
   const { toast } = useToast();
   const utils = trpc.useUtils();
 
-  return trpc.createBoard.useMutation({
+  return trpc.board.create.useMutation({
     mutationKey: ["new-board"],
     onMutate: async (data) => {
-      await utils.getBoards.cancel();
-      const previousBoards = utils.getBoards.getData({ uid: data.uid });
+      await utils.boards.cancel();
+      const previousBoards = utils.boards.getData();
 
-      utils.getBoards.setData(
-        { uid: data.uid },
+      utils.boards.setData(
+        undefined,
         (old: typeof previousBoards) =>
           ({
             boardsCollaborated: [...old?.boardsCollaborated!],
@@ -35,7 +35,7 @@ export default function useNewBoard() {
       return { previousBoards };
     },
     onError(error, variables, context) {
-      utils.getBoards.setData({ uid: variables.uid }, context?.previousBoards);
+      utils.boards.setData(undefined, context?.previousBoards);
       toast({
         title: "Error",
         description: error.message,
@@ -51,7 +51,7 @@ export default function useNewBoard() {
     },
     onSettled: () => {
       console.log("refetching");
-      utils.getBoards.invalidate();
+      utils.boards.invalidate();
     },
   });
 }

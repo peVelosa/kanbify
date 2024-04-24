@@ -10,7 +10,6 @@ const HydrationBoundary = async ({ children }: HydrationBoundaryProps) => {
 
   return (
     <>
-      {JSON.stringify(dehydratedState)}
       <HydrationBoundaryBase state={dehydratedState}>{children}</HydrationBoundaryBase>
     </>
   );

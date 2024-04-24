@@ -18,8 +18,7 @@ export default async function BoardPage({ params: { bid } }: BoardPageProps) {
 
   if (!isValidBoard) redirect("/dashboard");
 
-  await serverClient.getBoard.prefetch({
-    uid: session?.user?.id,
+  await serverClient.board.byId.prefetch({
     bid: bid,
   });
 

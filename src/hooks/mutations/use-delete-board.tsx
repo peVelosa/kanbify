@@ -2,30 +2,26 @@ import { trpc } from "@/app/_trpc/client";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 
-type useDeleteBoardProps = {
-  bid: string;
-};
-
-const useDeleteBoard = ({ bid }: useDeleteBoardProps) => {
+const useDeleteBoard = () => {
   const { toast } = useToast();
   const router = useRouter();
   const utils = trpc.useUtils();
 
-  return trpc.deleteBoard.useMutation({
-    mutationKey: ["delete-board", bid],
+  return trpc.board.delete.useMutation({
+    mutationKey: ["delete-board"],
     onMutate: async (data) => {
-      await utils.getBoards.cancel();
-      const previousBoards = utils.getBoards.getData({ uid: data.uid });
+      await utils.boards.cancel();
+      const previousBoards = utils.boards.getData();
 
-      utils.getBoards.setData({ uid: data.uid }, (old: typeof previousBoards) => ({
+      utils.boards.setData(undefined, (old: typeof previousBoards) => ({
         ...old!,
-        boardsOwned: [...old?.boardsOwned!].filter((b) => b.id !== bid),
+        boardsOwned: [...old?.boardsOwned!].filter((b) => b.id !== data.bid),
       }));
 
       return { previousBoards };
     },
     onError: (error, variables, context) => {
-      utils.getBoards.setData({ uid: variables.uid }, context?.previousBoards);
+      utils.boards.setData(undefined, context?.previousBoards);
       toast({
         title: "Error",
         description: error.message,
@@ -40,7 +36,7 @@ const useDeleteBoard = ({ bid }: useDeleteBoardProps) => {
       });
     },
     onSettled: () => {
-      utils.getBoards.invalidate();
+      utils.boards.invalidate();
       router.replace("/dashboard");
     },
   });
