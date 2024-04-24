@@ -1,6 +1,6 @@
 "use client";
 
-import { acceptInvite } from "@/app/actions/accept-invite";
+import api from "@/app/api/api";
 import { Button } from "@/components/ui/button";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { useState } from "react";
@@ -15,14 +15,14 @@ const AcceptInvite = ({ bid }: AcceptInviteProps) => {
   const [message, setMessage] = useState<string>("");
 
   const handleAccept = async () => {
-    const response = await acceptInvite({ bid, uid: user?.id });
+    const { success, message } = await api.acceptInvite(bid, user?.id!);
 
-    if (response?.error) {
-      setMessage(response.error);
+    if (!success) {
+      setMessage(message!);
       return;
     }
-    if (response?.success) {
-      setMessage(response.success);
+    if (success) {
+      setMessage(message!);
       return;
     }
   };

@@ -116,6 +116,19 @@ class API {
 
     return data;
   }
+  async acceptInvite(bid: string, uid: string) {
+    const res = await axios.post<BoardsData>(`/api/boards/${bid}/invite/accept`, {
+      uid,
+    });
+
+    const { success, message } = res.data;
+
+    if (!success) {
+      throw new Error(message);
+    }
+
+    return { success, message };
+  }
 }
 
 const api = new API();
