@@ -1,6 +1,7 @@
 import axios from "axios";
 import { Data as BoardsData } from "./user/[uid]/boards/route";
 import { Data as BoardData } from "./boards/[bid]/route";
+import { Data as InviteData } from "./boards/[bid]/invite/route";
 import { DefaultResponse } from "@/types/responses";
 
 class API {
@@ -92,6 +93,20 @@ class API {
     if (!bid) return null;
 
     const res = await axios.get<BoardData>(`/api/boards/${bid}`);
+
+    const { success, data, message } = res.data;
+
+    if (!success) {
+      throw new Error(message);
+    }
+
+    return data;
+  }
+
+  async createInvite(bid: string, title: string) {
+    const res = await axios.post<InviteData>(`/api/boards/${bid}/invite`, {
+      title,
+    });
 
     const { success, data, message } = res.data;
 
