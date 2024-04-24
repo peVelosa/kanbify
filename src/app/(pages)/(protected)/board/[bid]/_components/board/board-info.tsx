@@ -1,15 +1,10 @@
 "use client";
 
 import EditButton from "../_actions/edit/edit";
-import AllowTo from "./allow-to";
 import Invite from "../_actions/invite/invite";
+import { Board } from "@/types/board";
 
-type BoardInfoProps = {
-  id: string;
-  title: string;
-  createdAt: Date;
-  description: string | null | undefined;
-};
+type BoardInfoProps = Omit<Board, "columns">;
 
 export default function BoardInfo({ id, title, description, createdAt }: BoardInfoProps) {
   return (

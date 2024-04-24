@@ -2,9 +2,13 @@
 
 import BoardInfo from "./_components/board/board-info";
 import BoardColumn from "./_components/board/board-column";
-import { BoardData } from "@/types/board";
+import { type Board } from "@/types/board";
 
-export default function BoardPageView({ board }: { board: BoardData }) {
+type BoardPageViewProps = {
+  board: Board;
+};
+
+export default function BoardPageView({ board }: BoardPageViewProps) {
   const info = {
     id: board.id,
     title: board.title,

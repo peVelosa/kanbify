@@ -50,7 +50,7 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error(error);
     return NextResponse.json<DefaultResponse>(
-      { success: false, message: "An error occurred while editing your board" },
+      { success: false, message: "An error occurred while creating your board" },
       { status: 404 },
     );
   }

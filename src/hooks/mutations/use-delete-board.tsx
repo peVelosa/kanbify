@@ -1,7 +1,5 @@
-import { TBoards } from "@/app/actions/get-boards/type";
-import api from "@/app/api/api";
+import { trpc } from "@/app/_trpc/client";
 import { useToast } from "@/components/ui/use-toast";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 
 type useDeleteBoardProps = {
@@ -9,54 +7,43 @@ type useDeleteBoardProps = {
 };
 
 const useDeleteBoard = ({ bid }: useDeleteBoardProps) => {
-  const queryClient = useQueryClient();
   const { toast } = useToast();
   const router = useRouter();
+  const utils = trpc.useUtils();
 
-  const mutation = useMutation({
+  return trpc.deleteBoard.useMutation({
     mutationKey: ["delete-board", bid],
-    mutationFn: async (values: { bid: string; user_id: string }) =>
-      await api.deleteBoard({
-        user_id: values.user_id,
-        bid,
-      }),
-    onMutate: async () => {
-      await queryClient.cancelQueries({ queryKey: ["boards"] });
+    onMutate: async (data) => {
+      await utils.getBoards.cancel();
+      const previousBoards = utils.getBoards.getData({ uid: data.uid });
 
-      const previousBoards = queryClient.getQueryData<TBoards>(["boards"]);
-
-      queryClient.setQueryData(
-        ["boards"],
-        (old: TBoards): TBoards => ({
-          ...old!,
-          boardsOwned: [...old?.boardsOwned!].filter((b) => b.id !== bid),
-        }),
-      );
+      utils.getBoards.setData({ uid: data.uid }, (old: typeof previousBoards) => ({
+        ...old!,
+        boardsOwned: [...old?.boardsOwned!].filter((b) => b.id !== bid),
+      }));
 
       return { previousBoards };
     },
-    onError: (err, __, context) => {
-      queryClient.setQueryData(["boards"], context?.previousBoards);
+    onError: (error, variables, context) => {
+      utils.getBoards.setData({ uid: variables.uid }, context?.previousBoards);
       toast({
         title: "Error",
-        description: "Error deleting board",
+        description: error.message,
         variant: "destructive",
       });
     },
-    onSuccess: (message) => {
+    onSuccess: (data) => {
       toast({
         title: "Board deleted",
-        description: message,
+        description: data.message,
         variant: "default",
       });
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["boards"] });
+      utils.getBoards.invalidate();
       router.replace("/dashboard");
     },
   });
-
-  return { ...mutation };
 };
 
 export default useDeleteBoard;

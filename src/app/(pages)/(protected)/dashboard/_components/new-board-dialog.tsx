@@ -16,9 +16,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import { CreateBoardSchema, TCreateBoardSchema } from "@/schemas/create-board";
 import useNewBoard from "@/hooks/mutations/use-new-board";
+import { useCurrentUser } from "@/hooks/use-current-user";
 
 export default function NewBoardDialog() {
   const [isOpen, setIsOpen] = useState(false);
+  const { data: user } = useCurrentUser();
 
   const form = useForm<TCreateBoardSchema>({
     resolver: zodResolver(CreateBoardSchema),
@@ -33,7 +35,7 @@ export default function NewBoardDialog() {
 
   const onSubmit = async (data: TCreateBoardSchema) => {
     setIsOpen(false);
-    mutate(data);
+    mutate({ uid: user?.id, ...data });
   };
 
   const resetForm = () => form.reset();

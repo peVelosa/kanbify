@@ -32,8 +32,13 @@ const DeleteProject = () => {
     const validatedFields = DeleteBoardSchema.safeParse({
       deleteProject: confirmDeletion,
     });
+
     if (!validatedFields.success) return;
-    mutate({ bid: params.bid, user_id: user?.id! });
+
+    mutate({
+      uid: user?.id,
+      bid: params.bid,
+    });
   };
 
   return (

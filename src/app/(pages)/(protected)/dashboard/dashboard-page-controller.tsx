@@ -2,13 +2,16 @@
 
 import DashboardView from "./dashboard-page-view";
 import { useBoards } from "@/hooks/use-boards";
+import { redirect } from "next/navigation";
 
 const DashboardPageController = () => {
-  const { data: boards } = useBoards();
+  const { data: board, isError } = useBoards();
+
+  if (isError) redirect("/");
 
   return (
     <>
-      <DashboardView boards={boards} />
+      <DashboardView boards={board} />
     </>
   );
 };

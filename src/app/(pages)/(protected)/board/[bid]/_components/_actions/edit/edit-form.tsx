@@ -11,7 +11,7 @@ import { useForm } from "react-hook-form";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import useEditForm from "@/hooks/mutations/use-edit-form";
+import useUpdateBoard from "@/hooks/mutations/use-update-board";
 import { useBoard } from "@/hooks/use-board";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -19,6 +19,7 @@ import DeleteProjectForm from "./delete-project";
 import AllowTo from "../../board/allow-to";
 import { z } from "zod";
 import { TEditBoardSchema } from "@/schemas";
+import { useParams } from "next/navigation";
 
 export const EditBoardSchema = z.object({
   title: z.string().min(3).trim(),
@@ -30,9 +31,11 @@ type EditFormProps = {
 };
 
 const EditForm = ({ onClick }: EditFormProps) => {
+  const params = useParams() as { bid: string };
+
   const { data: board } = useBoard();
   const { data: user } = useCurrentUser();
-  const { mutate } = useEditForm({ bid: board!.id });
+  const { mutate } = useUpdateBoard({ bid: board!.id });
 
   const form = useForm<TEditBoardSchema>({
     resolver: zodResolver(EditBoardSchema),
@@ -44,12 +47,12 @@ const EditForm = ({ onClick }: EditFormProps) => {
 
   const onSubmit = form.handleSubmit(async (values: TEditBoardSchema) => {
     onClick();
+
     mutate({
-      bid: board?.id,
+      bid: params.bid,
       description: values.description,
       title: values.title,
-      user_id: user?.id,
-      titleChanged: values.title !== board?.title,
+      uid: user?.id!,
     });
   });
 
