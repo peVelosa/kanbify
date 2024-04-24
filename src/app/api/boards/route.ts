@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { DefaultResponse } from "@/types/responses";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
@@ -42,9 +43,15 @@ export async function POST(request: Request) {
         },
       },
     });
-    return NextResponse.json({ success: { description: "Board Created" } });
+    return NextResponse.json<DefaultResponse>({
+      success: true,
+      message: "Your board has been created successfully",
+    });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ error: "Error creating board" }, { status: 404 });
+    return NextResponse.json<DefaultResponse>(
+      { success: false, message: "An error occurred while editing your board" },
+      { status: 404 },
+    );
   }
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { newBoard } from "@/actions/create-board";
-import { TCreateBoardSchema } from "@/actions/create-board/type";
+import { TCreateBoardSchema } from "@/schemas/create-board";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCurrentUser } from "../use-current-user";
 import { useToast } from "@/components/ui/use-toast";
@@ -44,10 +44,10 @@ export default function useNewBoard() {
         variant: "destructive",
       });
     },
-    onSuccess: () => {
+    onSuccess: (message) => {
       toast({
         title: "Board created",
-        description: "Your board has been created successfully",
+        description: message,
         variant: "default",
       });
     },

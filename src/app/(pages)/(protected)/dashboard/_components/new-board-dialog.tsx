@@ -1,5 +1,3 @@
-import { TCreateBoardSchema } from "@/actions/create-board/type";
-import { CreateBoardSchema } from "@/actions/create-board/schema";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import {
@@ -16,6 +14,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
+import { CreateBoardSchema, TCreateBoardSchema } from "@/schemas/create-board";
 import useNewBoard from "@/hooks/mutations/use-new-board";
 
 export default function NewBoardDialog() {
@@ -59,7 +58,10 @@ export default function NewBoardDialog() {
         <DialogContent>
           <h2 className="mb-4 text-2xl font-semibold">Create new board</h2>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="space-y-4"
+            >
               <FormField
                 control={form.control}
                 name="title"
@@ -67,7 +69,10 @@ export default function NewBoardDialog() {
                   <FormItem>
                     <FormLabel>Title</FormLabel>
                     <FormControl>
-                      <Input placeholder="Your board name..." {...field} />
+                      <Input
+                        placeholder="Your board name..."
+                        {...field}
+                      />
                     </FormControl>
                     <FormDescription>This is your board name.</FormDescription>
                     <FormMessage />

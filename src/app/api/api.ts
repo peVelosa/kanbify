@@ -1,4 +1,6 @@
 import axios from "axios";
+import { Data } from "./user/[uid]/boards/route";
+import { DefaultResponse } from "@/types/responses";
 
 class API {
   constructor() {}
@@ -6,8 +8,15 @@ class API {
   async getBoards(owner_id?: string) {
     if (!owner_id) return null;
 
-    const res = await axios.get(`/api/user/${owner_id}/boards`);
-    return res.data;
+    const res = await axios.get<Data>(`/api/user/${owner_id}/boards`);
+
+    const { success, data, message } = res.data;
+
+    if (!success) {
+      throw new Error(message);
+    }
+
+    return data;
   }
 
   async createBoard({
@@ -19,21 +28,34 @@ class API {
     title: string;
     description?: string;
   }) {
-    const res = await axios.post(`/api/boards`, {
+    const res = await axios.post<DefaultResponse>(`/api/boards`, {
       title,
       description,
       uid: userId,
     });
-    return res.data;
+    const { success, message } = res.data;
+
+    if (!success) {
+      throw new Error(message);
+    }
+
+    return message;
   }
 
   async deleteBoard({ user_id, bid }: { user_id: string; bid: string }) {
-    const res = await axios.delete(`/api/boards/${bid}`, {
+    const res = await axios.delete<DefaultResponse>(`/api/boards/${bid}`, {
       data: {
         uid: user_id,
       },
     });
-    return res.data;
+
+    const { success, message } = res.data;
+
+    if (!success) {
+      throw new Error(message);
+    }
+
+    return message;
   }
 
   async editBoard({
@@ -55,7 +77,14 @@ class API {
       titleChanged,
       description,
     });
-    return res.data;
+
+    const { success, message } = res.data;
+
+    if (!success) {
+      throw new Error(message);
+    }
+
+    return message;
   }
 }
 

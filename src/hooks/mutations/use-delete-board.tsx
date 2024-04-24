@@ -37,21 +37,18 @@ const useDeleteBoard = ({ bid }: useDeleteBoardProps) => {
     },
     onError: (err, __, context) => {
       queryClient.setQueryData(["boards"], context?.previousBoards);
+      toast({
+        title: "Error",
+        description: "Error deleting board",
+        variant: "destructive",
+      });
     },
-    onSuccess: (response) => {
-      if (response?.error) {
-        toast({
-          title: "Error",
-          description: response.error,
-          variant: "destructive",
-        });
-      } else {
-        toast({
-          title: "Board deleted",
-          description: response.success,
-          variant: "default",
-        });
-      }
+    onSuccess: (message) => {
+      toast({
+        title: "Board deleted",
+        description: message,
+        variant: "default",
+      });
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["boards"] });

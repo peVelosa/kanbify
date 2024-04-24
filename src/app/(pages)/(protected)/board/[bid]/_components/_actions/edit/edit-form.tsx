@@ -10,15 +10,20 @@ import {
 import { useForm } from "react-hook-form";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
-import { TEditBoardSchema } from "@/app/actions/edit-board/type";
 import { Button } from "@/components/ui/button";
-import { EditBoardSchema } from "@/app/actions/edit-board/schema";
 import useEditForm from "@/hooks/mutations/use-edit-form";
 import { useBoard } from "@/hooks/use-board";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import DeleteProjectForm from "./delete-project";
 import AllowTo from "../../board/allow-to";
+import { z } from "zod";
+import { TEditBoardSchema } from "@/schemas";
+
+export const EditBoardSchema = z.object({
+  title: z.string().min(3).trim(),
+  description: z.string().optional().default(""),
+});
 
 type EditFormProps = {
   onClick: () => void;
@@ -61,7 +66,10 @@ const EditForm = ({ onClick }: EditFormProps) => {
               <FormItem>
                 <FormLabel>Title</FormLabel>
                 <FormControl>
-                  <Input placeholder="john.doe@email.com" {...field} />
+                  <Input
+                    placeholder="john.doe@email.com"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -74,7 +82,10 @@ const EditForm = ({ onClick }: EditFormProps) => {
               <FormItem>
                 <FormLabel>Description</FormLabel>
                 <FormControl>
-                  <Textarea placeholder="Description of your project" {...field} />
+                  <Textarea
+                    placeholder="Description of your project"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -86,7 +97,11 @@ const EditForm = ({ onClick }: EditFormProps) => {
         <DeleteProjectForm />
       </AllowTo>
       <div className="flex items-center justify-end gap-4">
-        <Button type="button" variant={"outline"} onClick={onClick}>
+        <Button
+          type="button"
+          variant={"outline"}
+          onClick={onClick}
+        >
           Cancel
         </Button>
         <Button

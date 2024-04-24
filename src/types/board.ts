@@ -1,5 +1,11 @@
-import { getBoard } from "@/app/actions/get-board-info";
-import { getBoards } from "@/app/actions/get-boards";
+import api from "@/app/api/api";
 
-export type Boards = Awaited<ReturnType<typeof getBoards>> | undefined;
-export type Board = Awaited<ReturnType<typeof getBoard>> | undefined;
+export type Boards = Awaited<ReturnType<typeof api.getBoards>> | undefined;
+export type Board = {
+  id: string;
+  title: string;
+  description: string | null;
+  _count: {
+    collaborators: number;
+  };
+};

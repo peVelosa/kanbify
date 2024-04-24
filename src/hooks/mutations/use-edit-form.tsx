@@ -1,4 +1,4 @@
-import { editBoard, editBoardProps } from "@/actions/edit-board";
+import { editBoardProps } from "@/actions/edit-board";
 import { TBoardInfo } from "@/app/actions/get-board-info/type";
 import api from "@/app/api/api";
 import { useToast } from "@/components/ui/use-toast";
@@ -40,21 +40,18 @@ const useEditForm = ({ bid }: UseEditFormProps) => {
     },
     onError: (err, newInfo, context) => {
       queryClient.setQueryData(["boards", bid], context?.previousInformation);
+      toast({
+        title: "Error",
+        description: "Error editing board",
+        variant: "destructive",
+      });
     },
-    onSuccess: (response) => {
-      if (response?.error) {
-        toast({
-          title: "Error",
-          description: response.error,
-          variant: "destructive",
-        });
-      } else {
-        toast({
-          title: "Board created",
-          description: "Your board has been edited successfully",
-          variant: "default",
-        });
-      }
+    onSuccess: (message) => {
+      toast({
+        title: "Board edited",
+        description: message,
+        variant: "default",
+      });
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["boards", bid] });
