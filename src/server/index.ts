@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { collaboratorProcedure, privateProcedure, router } from "./trpc";
+import { privateProcedure, ownerProcedure, adminProcedure, router } from "./trpc";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 
@@ -164,7 +164,7 @@ export const appRouter = router({
           };
         }
       }),
-    delete: collaboratorProcedure
+    delete: ownerProcedure
       .input(
         z.object({
           bid: z.string(),
@@ -173,8 +173,9 @@ export const appRouter = router({
       .mutation(async ({ ctx, input: { bid } }) => {
         const { user, isOwnerOrAdmin } = ctx;
 
-        if (!user?.id) return { success: false, message: "Invalid data" };
-        console.log("isOwnerOrAdmin: ", isOwnerOrAdmin);
+        if (!user?.id) throw new TRPCError({ code: "BAD_REQUEST", message: "Invalid data" });
+        if (!isOwnerOrAdmin) throw new TRPCError({ code: "UNAUTHORIZED" });
+
         try {
           await db.board.delete({
             where: {
@@ -186,10 +187,10 @@ export const appRouter = router({
           return { success: true, message: "Board Deleted" };
         } catch (error) {
           console.error(error);
-          return { success: false, message: "Error deleting board" };
+          throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Error deleting board" });
         }
       }),
-    update: collaboratorProcedure
+    update: adminProcedure
       .input(
         z.object({
           title: z.string().min(3),

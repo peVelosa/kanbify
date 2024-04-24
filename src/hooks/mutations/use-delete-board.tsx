@@ -34,10 +34,10 @@ const useDeleteBoard = () => {
         description: data.message,
         variant: "default",
       });
+      router.replace("/dashboard");
     },
     onSettled: () => {
       utils.boards.invalidate();
-      router.replace("/dashboard");
     },
   });
 };

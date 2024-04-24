@@ -43,26 +43,52 @@ const isAuthed = t.middleware(async ({ next }) => {
 
 export const privateProcedure = t.procedure.use(isAuthed);
 
-export const collaboratorProcedure = privateProcedure
-  .input(
-    z.object({
-      bid: z.string(),
-    }),
-  )
-  .use(async ({ ctx, next, input }) => {
-    const { user } = ctx;
-    const { bid } = input;
+const collaboratorProcedure = privateProcedure.input(
+  z.object({
+    bid: z.string(),
+  }),
+);
 
-    const role = await getRole({
-      user_id: user?.id ?? "",
-      bid: bid,
-      desiredRole: ["OWNER", "ADMIN"],
-    });
+export const adminProcedure = collaboratorProcedure.use(async function isOwnerOrAdmin({
+  ctx,
+  next,
+  input,
+}) {
+  const { user } = ctx;
+  const { bid } = input;
 
-    return next({
-      ctx: {
-        user: user,
-        isOwnerOrAdmin: role.success === "Allowed",
-      },
-    });
+  const role = await getRole({
+    user_id: user?.id ?? "",
+    bid: bid,
+    desiredRole: ["OWNER", "ADMIN"],
   });
+
+  return next({
+    ctx: {
+      user: user,
+      isOwnerOrAdmin: role.success === "Allowed",
+    },
+  });
+});
+
+export const ownerProcedure = collaboratorProcedure.use(async function isOwnerOrAdmin({
+  ctx,
+  next,
+  input,
+}) {
+  const { user } = ctx;
+  const { bid } = input;
+
+  const role = await getRole({
+    user_id: user?.id ?? "",
+    bid: bid,
+    desiredRole: ["OWNER"],
+  });
+
+  return next({
+    ctx: {
+      user: user,
+      isOwnerOrAdmin: role.success === "Allowed",
+    },
+  });
+});
