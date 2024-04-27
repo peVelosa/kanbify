@@ -8,6 +8,7 @@ const DashboardPageController = () => {
   const { data: board, isError } = useBoards();
 
   if (isError) redirect("/");
+  if (!board) return null;
 
   return (
     <>

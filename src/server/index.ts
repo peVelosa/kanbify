@@ -1,7 +1,9 @@
 import { db } from "@/lib/db";
-import { privateProcedure, ownerProcedure, adminProcedure, router } from "./trpc";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
+import { privateProcedure, ownerProcedure, adminProcedure } from "./procedures";
+import { router } from "./trpc";
+import { getUserBoards, getUserBoardsCollaborations } from "./actions";
 
 export const appRouter = router({
   boards: privateProcedure.query(async ({ ctx }) => {
@@ -9,58 +11,13 @@ export const appRouter = router({
 
     if (!user?.id) return null;
 
-    const boardsOwned = await db.board.findMany({
-      where: {
-        owner_id: user.id,
-      },
-      select: {
-        id: true,
-        title: true,
-        description: true,
-        _count: {
-          select: {
-            collaborators: true,
-          },
-        },
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-    });
+    const boardsOwned = await getUserBoards({ uid: user.id });
 
-    const boardsCollaborated = await db.collaborator.findMany({
-      where: {
-        user_id: user.id,
-        AND: {
-          board: {
-            NOT: {
-              owner_id: user.id,
-            },
-          },
-        },
-      },
-      select: {
-        board: {
-          select: {
-            id: true,
-            title: true,
-            description: true,
-            _count: {
-              select: {
-                collaborators: true,
-              },
-            },
-          },
-        },
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-    });
+    const boardsCollaborated = await getUserBoardsCollaborations({ uid: user.id });
 
     return {
       boardsOwned,
-      boardsCollaborated: boardsCollaborated.map(({ board }) => board),
+      boardsCollaborated: boardsCollaborated?.map(({ board }) => board),
     };
   }),
   board: {
