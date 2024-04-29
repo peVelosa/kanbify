@@ -1,13 +1,13 @@
 import Credentials from "next-auth/providers/credentials";
 
 import type { NextAuthConfig } from "next-auth";
-import { validateFields } from "../lib/utils";
+import { validateFields } from "@/lib/utils";
 import { TLoginSchema } from "@/actions/login/type";
 import { LoginSchema } from "@/actions/login/schema";
 import { getUserByEmail } from "@/actions/get-user";
 import bcrypt from "bcryptjs";
 
-export default {
+export const authConfig = {
   providers: [
     Credentials({
       async authorize(credentials, request) {
