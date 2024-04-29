@@ -1,6 +1,6 @@
 "use server";
 
-import { db } from "@/lib/db";
+import { db } from "@/server/db";
 import InvitePageView from "./invite-page-view";
 
 export type Invite = Awaited<ReturnType<typeof fetchInvite>>;

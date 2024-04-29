@@ -2,7 +2,7 @@
 
 import VerificationLink from "@/emails/verification-link";
 import send from "@/actions/send-emails";
-import { db } from "@/lib/db";
+import { db } from "@/server/db";
 import { validateFields } from "@/lib/utils";
 import * as z from "zod";
 
@@ -15,10 +15,10 @@ const EmailSchema = z.object({
 });
 
 export const verificationEmail = async ({ email }: verificationEmailProps) => {
-  const validatedFields = validateFields<
-    z.infer<typeof EmailSchema>,
-    typeof EmailSchema
-  >({ email }, EmailSchema);
+  const validatedFields = validateFields<z.infer<typeof EmailSchema>, typeof EmailSchema>(
+    { email },
+    EmailSchema,
+  );
 
   if (!validatedFields) return null;
 
@@ -35,8 +35,7 @@ export const verificationEmail = async ({ email }: verificationEmailProps) => {
 
   if (
     existingVerification &&
-    new Date(existingVerification.createdAt.getTime() + 1000 * 60).getTime() >
-      new Date().getTime()
+    new Date(existingVerification.createdAt.getTime() + 1000 * 60).getTime() > new Date().getTime()
   ) {
     return new Date(existingVerification.createdAt.getTime() + 1000 * 60);
   }

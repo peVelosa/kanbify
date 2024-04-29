@@ -7,13 +7,13 @@ const useDeleteBoard = () => {
   const router = useRouter();
   const utils = trpc.useUtils();
 
-  return trpc.board.delete.useMutation({
+  return trpc.boards.delete.useMutation({
     mutationKey: ["delete-board"],
     onMutate: async (data) => {
-      await utils.boards.cancel();
-      const previousBoards = utils.boards.getData();
+      await utils.boards.all.cancel();
+      const previousBoards = utils.boards.all.getData();
 
-      utils.boards.setData(undefined, (old: typeof previousBoards) => ({
+      utils.boards.all.setData(undefined, (old: typeof previousBoards) => ({
         ...old!,
         boardsOwned: [...old?.boardsOwned!].filter((b) => b.id !== data.bid),
       }));
@@ -21,7 +21,7 @@ const useDeleteBoard = () => {
       return { previousBoards };
     },
     onError: (error, variables, context) => {
-      utils.boards.setData(undefined, context?.previousBoards);
+      utils.boards.all.setData(undefined, context?.previousBoards);
       toast({
         title: "Error",
         description: error.message,
@@ -37,7 +37,7 @@ const useDeleteBoard = () => {
       router.replace("/dashboard");
     },
     onSettled: () => {
-      utils.boards.invalidate();
+      utils.boards.all.invalidate();
     },
   });
 };

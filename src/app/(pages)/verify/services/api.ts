@@ -1,5 +1,5 @@
 "use server";
-import { db } from "@/lib/db";
+import { db } from "@/server/db";
 
 export const fetchVerification = async (vid: string) => {
   return await db.verificationRequest.findFirst({

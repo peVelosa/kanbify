@@ -1,6 +1,6 @@
 "use server";
 
-import { db } from "@/lib/db";
+import { db } from "@/server/db";
 import { TRegisterSchema } from "./type";
 import { RegisterSchema } from "./schema";
 import bcrypt from "bcryptjs";

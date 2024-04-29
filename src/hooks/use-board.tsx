@@ -7,9 +7,7 @@ import { trpc } from "@/app/_trpc/client";
 export const useBoard = () => {
   const params = useParams() as { bid: string };
 
-  const { data } = useCurrentUser();
-
-  return trpc.board.byId.useQuery({
+  return trpc.boards.byId.useQuery({
     bid: params.bid,
   });
 };

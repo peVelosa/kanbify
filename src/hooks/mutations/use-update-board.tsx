@@ -10,14 +10,14 @@ const useUpdateBoard = ({ bid }: UseUpdateBoardProps) => {
 
   const utils = trpc.useUtils();
 
-  return trpc.board.update.useMutation({
+  return trpc.boards.update.useMutation({
     mutationKey: ["edit-board", bid],
     onMutate: async (data) => {
-      await utils.boards.cancel();
+      await utils.boards.all.cancel();
 
-      const previousInformation = utils.board.byId.getData({ bid });
+      const previousInformation = utils.boards.byId.getData({ bid });
 
-      utils.board.byId.setData(
+      utils.boards.byId.setData(
         { bid: data.bid },
         (old: typeof previousInformation) =>
           ({
@@ -30,7 +30,7 @@ const useUpdateBoard = ({ bid }: UseUpdateBoardProps) => {
       return { previousInformation };
     },
     onError: (error, variables, context) => {
-      utils.board.byId.setData({ bid }, context?.previousInformation);
+      utils.boards.byId.setData({ bid }, context?.previousInformation);
       toast({
         title: "Error",
         description: error.message,
@@ -45,7 +45,7 @@ const useUpdateBoard = ({ bid }: UseUpdateBoardProps) => {
       });
     },
     onSettled: () => {
-      utils.board.byId.invalidate({ bid });
+      utils.boards.byId.invalidate({ bid });
     },
   });
 };

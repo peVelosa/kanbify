@@ -1,9 +1,9 @@
 "use server";
 
-import { db } from "@/lib/db";
+import { db } from "@/server/db";
 import { $Enums } from "@prisma/client";
 
-export async function getRole({
+export async function isAllowedTo({
   bid,
   user_id,
   desiredRole,
@@ -12,8 +12,7 @@ export async function getRole({
   user_id?: string;
   desiredRole: $Enums.ROLE[];
 }) {
-  if (!bid || !user_id || desiredRole.length === 0)
-    return { error: "Invalid data" };
+  if (!bid || !user_id) return { error: "Invalid data" };
 
   try {
     const collaborator = await db.collaborator.findUnique({
@@ -28,12 +27,11 @@ export async function getRole({
       },
     });
 
-    if (!collaborator || !desiredRole.includes(collaborator.role))
-      return { error: "You don't have permission" };
+    if (!collaborator || !desiredRole.includes(collaborator.role)) return false;
 
-    return { success: "Allowed" };
+    return true;
   } catch (error) {
     console.error(error);
-    return { error: "Something went wrong!" };
+    return false;
   }
 }

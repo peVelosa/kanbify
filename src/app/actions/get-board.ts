@@ -1,6 +1,6 @@
 "use server";
 
-import { db } from "@/lib/db";
+import { db } from "@/server/db";
 
 export default async function getBoard(bid: string, uid?: string) {
   try {

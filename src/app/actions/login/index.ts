@@ -4,23 +4,19 @@ import { LoginSchema } from "./schema";
 import { TLoginSchema } from "./type";
 import { validateFields } from "@/lib/utils";
 import bcrypt from "bcryptjs";
-import { signIn } from "@/auth";
+import { signIn } from "@/server/auth";
 import { AuthError } from "next-auth";
 import { getUserByEmail } from "../get-user";
 
 export const login = async (values: TLoginSchema) => {
-  const validatedFields = validateFields<TLoginSchema, typeof LoginSchema>(
-    values,
-    LoginSchema,
-  );
+  const validatedFields = validateFields<TLoginSchema, typeof LoginSchema>(values, LoginSchema);
   if (!validatedFields) return { error: "Invalid credentials!" };
 
   const { email, password } = validatedFields;
 
   const user = await getUserByEmail(email);
 
-  if (!user || !user?.password || !user.email)
-    return { error: "User not found" };
+  if (!user || !user?.password || !user.email) return { error: "User not found" };
 
   const isVerified = user?.emailVerified;
   const isPasswordCorrect = await bcrypt.compare(password, user.password);

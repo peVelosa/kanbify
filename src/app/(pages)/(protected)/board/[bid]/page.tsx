@@ -1,9 +1,8 @@
 import { redirect } from "next/navigation";
 import BoardPageController from "./board-page-controller";
 import HydrationBoundary from "@/components/elements/hydration-boundary.";
-import { auth } from "@/auth";
+import { auth } from "@/server/auth";
 import getBoard from "@/app/actions/get-board";
-import { serverClient } from "@/server/serverClient";
 
 type BoardPageProps = {
   params: {
@@ -17,10 +16,6 @@ export default async function BoardPage({ params: { bid } }: BoardPageProps) {
   const isValidBoard = await getBoard(bid, session?.user?.id);
 
   if (!isValidBoard) redirect("/dashboard");
-
-  await serverClient.board.byId.prefetch({
-    bid: bid,
-  });
 
   return (
     <>

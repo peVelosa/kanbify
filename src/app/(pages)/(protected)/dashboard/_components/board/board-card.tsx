@@ -1,11 +1,10 @@
-import { TBoard } from "@/app/actions/get-boards/type";
 import { Card, CardContent } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
 import BoardHeader from "./board-header";
 import SkeletonCard from "./skeleton-card";
 import { useCollaboratorRole } from "@/hooks/use-collaborator-role";
 
-export default function BoardCard({ id, title, description, _count: { collaborators } }: TBoard) {
+export default function BoardCard({ id, title, description, _count: { collaborators } }: any) {
   const { data: role } = useCollaboratorRole({ bid: id });
   const routes = useRouter();
 
@@ -20,7 +19,10 @@ export default function BoardCard({ id, title, description, _count: { collaborat
       onClick={handleBoardClick}
       className="max-w-[350px] cursor-pointer transition-colors duration-200 ease-in-out hover:bg-slate-100"
     >
-      <BoardHeader title={title} description={description} />
+      <BoardHeader
+        title={title}
+        description={description}
+      />
       <CardContent>
         <div className="space-y-2 text-sm text-gray-600">
           <p>

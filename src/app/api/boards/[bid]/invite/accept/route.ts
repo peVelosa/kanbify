@@ -1,4 +1,4 @@
-import { db } from "@/lib/db";
+import { db } from "@/server/db";
 import { Invite } from "@/types/invite";
 import { DefaultResponse } from "@/types/responses";
 import { NextResponse } from "next/server";

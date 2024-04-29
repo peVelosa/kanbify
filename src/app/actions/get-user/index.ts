@@ -1,6 +1,6 @@
 "use server";
 
-import { db } from "@/lib/db";
+import { db } from "@/server/db";
 
 export const getUserByEmail = async (email?: string | null) => {
   if (!email) return null;
@@ -52,10 +52,7 @@ export const getUserById = async (uid?: string | null) => {
   }
 };
 
-export const getCollaboratorRole = async (
-  uid?: string | null,
-  bid?: string | null,
-) => {
+export const getCollaboratorRole = async (uid?: string | null, bid?: string | null) => {
   if (!uid || !bid) return null;
   try {
     const user = await db.collaborator.findUnique({
