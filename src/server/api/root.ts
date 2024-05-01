@@ -1,4 +1,5 @@
 import { boardsRouters } from "./routers/board/board.routes";
+import { authRoutes } from "./routers/auth/auth.routes";
 import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
 
 /**
@@ -8,6 +9,7 @@ import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
  */
 export const appRouter = createTRPCRouter({
   boards: boardsRouters,
+  auth: authRoutes,
 });
 
 // export type definition of API

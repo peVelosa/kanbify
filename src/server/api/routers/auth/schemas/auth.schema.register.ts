@@ -1,4 +1,4 @@
-import * as z from "zod";
+import { z } from "zod";
 
 export const RegexUpperCase = /[A-Z]+/;
 export const RegexLowerCase = /[a-z]+/;
@@ -31,3 +31,5 @@ export const RegisterSchema = z
     message: "Password must match",
     path: ["confirm_password"],
   });
+
+export type TRegisterSchema = z.infer<typeof RegisterSchema>;

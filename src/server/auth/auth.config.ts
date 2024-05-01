@@ -2,8 +2,7 @@ import Credentials from "next-auth/providers/credentials";
 
 import type { NextAuthConfig } from "next-auth";
 import { validateFields } from "@/lib/utils";
-import { TLoginSchema } from "@/actions/login/type";
-import { LoginSchema } from "@/actions/login/schema";
+import { LoginSchema, type TLoginSchema } from "@/server/api/routers/auth/schemas";
 import { getUserByEmail } from "@/actions/get-user";
 import bcrypt from "bcryptjs";
 

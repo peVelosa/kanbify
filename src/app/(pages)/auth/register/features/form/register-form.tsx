@@ -13,24 +13,27 @@ import {
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+
+import PasswordInput from "@/app/(pages)/auth/_components/form/password-input";
+import { useEffect, useState } from "react";
+import Requirements from "./requirements";
+import FormError from "@/app/(pages)/auth/_components/form/form-error";
+import FormSuccess from "@/app/(pages)/auth/_components/form/form-success";
+import FormWarning from "@/app/(pages)/auth/_components/form/form-warning";
+import { trpc } from "@/app/_trpc/client";
 import {
+  RegisterSchema,
+  type TRegisterSchema,
   RegexEspecialCharacter,
   RegexLowerCase,
   RegexNumber,
   RegexUpperCase,
-  RegisterSchema,
-} from "@/actions/register/schema";
-import PasswordInput from "@/app/(pages)/auth/_components/form/password-input";
-import { useEffect, useState } from "react";
-import Requirements from "./requirements";
-import { TRegisterSchema } from "@/actions/register/type";
-import { register } from "@/actions/register";
-import FormError from "@/app/(pages)/auth/_components/form/form-error";
-import FormSuccess from "@/app/(pages)/auth/_components/form/form-success";
-import FormWarning from "@/app/(pages)/auth/_components/form/form-warning";
+} from "@/server/api/routers/auth/schemas";
 
 export default function RegisterForm() {
   const [message, setMessage] = useState<any>({ error: "", success: "" });
+
+  const { mutateAsync: register } = trpc.auth.register.useMutation();
 
   const form = useForm<TRegisterSchema>({
     resolver: zodResolver(RegisterSchema),
@@ -61,13 +64,17 @@ export default function RegisterForm() {
   }, [password]);
 
   const onSubmit = async (values: TRegisterSchema) => {
+    setMessage({ error: "", success: "" });
     const result = await register(values);
     setMessage(result);
   };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-8"
+      >
         <FormField
           control={form.control}
           name="name"
@@ -75,7 +82,10 @@ export default function RegisterForm() {
             <FormItem>
               <FormLabel>Name</FormLabel>
               <FormControl>
-                <Input placeholder="John Doe" {...field} />
+                <Input
+                  placeholder="John Doe"
+                  {...field}
+                />
               </FormControl>
               <FormDescription>This is your public display name.</FormDescription>
               <FormMessage />
@@ -89,7 +99,10 @@ export default function RegisterForm() {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="john.doe@email.com" {...field} />
+                <Input
+                  placeholder="john.doe@email.com"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -127,7 +140,11 @@ export default function RegisterForm() {
         <FormError error={message?.error} />
         <FormSuccess success={message?.success} />
         <FormWarning warning={message?.warning} />
-        <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
+        <Button
+          type="submit"
+          className="w-full"
+          disabled={form.formState.isSubmitting}
+        >
           Register
         </Button>
       </form>

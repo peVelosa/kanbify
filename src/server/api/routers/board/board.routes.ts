@@ -1,6 +1,6 @@
 import { desiredRoleProcedure, privateProcedure } from "@/server/api/trpc";
 import { TRPCError } from "@trpc/server";
-import { z } from "zod";
+import { BoardSchemaByIdOrDelete, BoardSchemaCreateOrUpdate } from "./schemas";
 
 export const boardsRouters = {
   all: privateProcedure.query(async ({ ctx }) => {
@@ -42,54 +42,43 @@ export const boardsRouters = {
       throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Error fetching boards" });
     }
   }),
-  byId: privateProcedure
-    .input(
-      z.object({
-        bid: z.string(),
-      }),
-    )
-    .query(async ({ ctx, input: { bid } }) => {
-      try {
-        return await ctx.db.board.findUnique({
-          where: {
-            id: bid,
-            collaborators: {
-              some: {
-                user_id: ctx.session.user.id,
-              },
+  byId: privateProcedure.input(BoardSchemaByIdOrDelete).query(async ({ ctx, input: { bid } }) => {
+    try {
+      return await ctx.db.board.findUnique({
+        where: {
+          id: bid,
+          collaborators: {
+            some: {
+              user_id: ctx.session.user.id,
             },
           },
-          select: {
-            id: true,
-            title: true,
-            description: true,
-            createdAt: true,
-            columns: {
-              select: {
-                id: true,
-                title: true,
-                _count: {
-                  select: {
-                    cards: true,
-                  },
+        },
+        select: {
+          id: true,
+          title: true,
+          description: true,
+          createdAt: true,
+          columns: {
+            select: {
+              id: true,
+              title: true,
+              _count: {
+                select: {
+                  cards: true,
                 },
-                order: true,
               },
+              order: true,
             },
           },
-        });
-      } catch (error) {
-        console.error(error);
-        throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Error fetching board" });
-      }
-    }),
+        },
+      });
+    } catch (error) {
+      console.error(error);
+      throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Error fetching board" });
+    }
+  }),
   create: privateProcedure
-    .input(
-      z.object({
-        title: z.string(),
-        description: z.string().nullish(),
-      }),
-    )
+    .input(BoardSchemaCreateOrUpdate)
     .mutation(async ({ ctx, input: { title, description } }) => {
       try {
         await ctx.db.board.create({
@@ -140,11 +129,7 @@ export const boardsRouters = {
       }
     }),
   delete: desiredRoleProcedure
-    .input(
-      z.object({
-        bid: z.string(),
-      }),
-    )
+    .input(BoardSchemaByIdOrDelete)
     .mutation(async ({ ctx, input: { bid } }) => {
       try {
         await ctx.db.board.delete({
@@ -161,12 +146,7 @@ export const boardsRouters = {
       }
     }),
   update: desiredRoleProcedure
-    .input(
-      z.object({
-        title: z.string().min(3),
-        description: z.string().nullish(),
-      }),
-    )
+    .input(BoardSchemaCreateOrUpdate)
     .mutation(async ({ ctx, input: { bid, title, description } }) => {
       try {
         await ctx.db.board.update({

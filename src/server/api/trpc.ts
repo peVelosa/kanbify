@@ -51,6 +51,8 @@ const ensureAuthentication = t.middleware(async ({ ctx, next }) => {
   });
 });
 
+export const publicProcedure = t.procedure;
+
 export const privateProcedure = t.procedure.use(ensureAuthentication);
 
 export const desiredRoleProcedure = privateProcedure
