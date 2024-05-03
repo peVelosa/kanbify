@@ -16,14 +16,11 @@ import { useBoard } from "@/hooks/use-board";
 import { zodResolver } from "@hookform/resolvers/zod";
 import DeleteProjectForm from "./delete-project";
 import AllowTo from "../../board/allow-to";
-import { z } from "zod";
-import { TEditBoardSchema } from "@/schemas";
 import { useParams } from "next/navigation";
-
-export const EditBoardSchema = z.object({
-  title: z.string().min(3).trim(),
-  description: z.string().optional().default(""),
-});
+import {
+  BoardSchemaCreateOrUpdate,
+  type TBoardSchemaCreateOrUpdate,
+} from "@/server/api/routers/board/schemas/board.schemas";
 
 type EditFormProps = {
   onClick: () => void;
@@ -35,15 +32,15 @@ const EditForm = ({ onClick }: EditFormProps) => {
   const { data: board } = useBoard();
   const { mutate } = useUpdateBoard({ bid: params.bid });
 
-  const form = useForm<TEditBoardSchema>({
-    resolver: zodResolver(EditBoardSchema),
+  const form = useForm<TBoardSchemaCreateOrUpdate>({
+    resolver: zodResolver(BoardSchemaCreateOrUpdate),
     defaultValues: {
       title: board?.title,
       description: board?.description ?? "",
     },
   });
 
-  const onSubmit = form.handleSubmit(async (values: TEditBoardSchema) => {
+  const onSubmit = form.handleSubmit(async (values: TBoardSchemaCreateOrUpdate) => {
     onClick();
 
     mutate({

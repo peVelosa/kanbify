@@ -3,7 +3,6 @@
 import VerificationLink from "@/emails/verification-link";
 import send from "@/actions/send-emails";
 import { db } from "@/server/db";
-import { validateFields } from "@/lib/utils";
 import * as z from "zod";
 
 type verificationEmailProps = {
@@ -15,14 +14,13 @@ const EmailSchema = z.object({
 });
 
 export const verificationEmail = async ({ email }: verificationEmailProps) => {
-  const validatedFields = validateFields<z.infer<typeof EmailSchema>, typeof EmailSchema>(
-    { email },
-    EmailSchema,
-  );
+  const validatedFields = EmailSchema.safeParse({
+    email,
+  });
 
-  if (!validatedFields) return null;
+  if (!validatedFields.success) return null;
 
-  const { email: validEmail } = validatedFields;
+  const { email: validEmail } = validatedFields.data;
 
   const existingVerification = await db.verificationRequest.findFirst({
     where: {
