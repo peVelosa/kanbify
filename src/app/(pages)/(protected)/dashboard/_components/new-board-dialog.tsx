@@ -14,16 +14,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
-import { CreateBoardSchema, TCreateBoardSchema } from "@/schemas/create-board";
+import {
+  BoardSchemaCreateOrUpdate,
+  type TBoardSchemaCreateOrUpdate,
+} from "@/server/api/routers/board/schemas";
 import useNewBoard from "@/hooks/mutations/use-new-board";
-import { trpc } from "@/app/_trpc/client";
 
 export default function NewBoardDialog() {
   const [isOpen, setIsOpen] = useState(false);
-  const { data: user } = trpc.user.me.useQuery();
 
-  const form = useForm<TCreateBoardSchema>({
-    resolver: zodResolver(CreateBoardSchema),
+  const form = useForm<TBoardSchemaCreateOrUpdate>({
+    resolver: zodResolver(BoardSchemaCreateOrUpdate),
     defaultValues: {
       title: "",
       description: "",
@@ -33,7 +34,7 @@ export default function NewBoardDialog() {
 
   const { mutate } = useNewBoard();
 
-  const onSubmit = async (data: TCreateBoardSchema) => {
+  const onSubmit = async (data: TBoardSchemaCreateOrUpdate) => {
     setIsOpen(false);
     mutate({ ...data });
   };

@@ -2,7 +2,7 @@
 
 import BoardInfo from "./_components/board/board-info";
 import BoardColumn from "./_components/board/board-column";
-import { type Board } from "@/types/board";
+import { type Board } from "@/types/trpc";
 
 type BoardPageViewProps = {
   board: Board;

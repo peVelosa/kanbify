@@ -1,22 +1,18 @@
 import Credentials from "next-auth/providers/credentials";
-
-import type { NextAuthConfig } from "next-auth";
-import { validateFields } from "@/lib/utils";
-import { LoginSchema, type TLoginSchema } from "@/server/api/routers/auth/schemas";
-import { getUserByEmail } from "@/actions/get-user";
 import bcrypt from "bcryptjs";
+import type { NextAuthConfig } from "next-auth";
+import { LoginSchema } from "@/server/api/routers/auth/schemas";
+import { getUserByEmail } from "@/actions/get-user";
 
 export const authConfig = {
   providers: [
     Credentials({
       async authorize(credentials, request) {
-        const validatedFields = validateFields<TLoginSchema, typeof LoginSchema>(
-          credentials as TLoginSchema,
-          LoginSchema,
-        );
-        if (!validatedFields) return null;
+        const validatedFields = LoginSchema.safeParse(credentials);
 
-        const { email, password } = validatedFields;
+        if (!validatedFields.success) return null;
+
+        const { email, password } = validatedFields.data;
 
         const user = await getUserByEmail(email);
 

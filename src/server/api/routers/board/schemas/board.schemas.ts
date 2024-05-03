@@ -6,5 +6,12 @@ export const BoardSchemaId = z.object({
 
 export const BoardSchemaCreateOrUpdate = z.object({
   title: z.string(),
-  description: z.string().nullish(),
+  description: z.string().optional(),
 });
+
+export const DeleteBoardSchema = z.object({
+  bid: z.string(),
+  deleteMessageConfirmation: z.string(),
+});
+
+export type TBoardSchemaCreateOrUpdate = z.infer<typeof BoardSchemaCreateOrUpdate>;

@@ -16,7 +16,7 @@ const useDeleteBoard = () => {
       if (!previousBoards) return { previousBoards };
 
       utils.boards.all.setData(undefined, (old: typeof previousBoards) => ({
-        ...old,
+        ...old!,
         boardsOwned: [...old?.boardsOwned!].filter((b) => b.id !== data.bid),
       }));
 

@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/dialog";
 import { useParams } from "next/navigation";
 import useDeleteBoard from "@/hooks/mutations/use-delete-board";
-import { DeleteBoardSchema } from "@/schemas/delete-board";
+import { DeleteBoardSchema } from "@/server/api/routers/board/schemas";
 
 const DeleteProject = () => {
   const params = useParams() as { bid: string };
@@ -28,13 +28,15 @@ const DeleteProject = () => {
 
   const handleDelete = () => {
     const validatedFields = DeleteBoardSchema.safeParse({
-      deleteProject: confirmDeletion,
+      bid: params.bid,
+      deleteMessageConfirmation: confirmDeletion,
     });
 
     if (!validatedFields.success) return;
 
     mutate({
       bid: params.bid,
+      deleteMessageConfirmation: confirmDeletion,
     });
   };
 

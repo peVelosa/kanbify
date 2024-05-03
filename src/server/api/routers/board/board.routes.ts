@@ -1,7 +1,8 @@
 import { privateProcedure } from "@/server/api/trpc";
 import { TRPCError } from "@trpc/server";
-import { BoardSchemaId, BoardSchemaCreateOrUpdate } from "./schemas";
+import { BoardSchemaId, BoardSchemaCreateOrUpdate, DeleteBoardSchema } from "./schemas";
 import { ownerProcedure, adminOrOwnerProcedure } from "./boards.procedures";
+import { inviteRoutes } from "./invite";
 
 export const boardsRouters = {
   all: privateProcedure.query(async ({ ctx }) => {
@@ -129,7 +130,9 @@ export const boardsRouters = {
         });
       }
     }),
-  delete: ownerProcedure.input(BoardSchemaId).mutation(async ({ ctx, input: { bid } }) => {
+  delete: ownerProcedure.input(DeleteBoardSchema).mutation(async ({ ctx, input }) => {
+    const { bid } = input;
+
     try {
       await ctx.db.board.delete({
         where: {
@@ -175,4 +178,5 @@ export const boardsRouters = {
         throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Error editing board" });
       }
     }),
+  invite: inviteRoutes,
 };

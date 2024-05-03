@@ -2,7 +2,7 @@
 
 import EditButton from "../_actions/edit/edit";
 import Invite from "../_actions/invite/invite";
-import { Board } from "@/types/board";
+import { Board } from "@/types/trpc";
 
 type BoardInfoProps = Omit<Board, "columns">;
 

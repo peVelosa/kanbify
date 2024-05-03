@@ -1,18 +1,12 @@
-"use client";
+import DashboardPageView from "./dashboard-page-view";
+import { api } from "@/app/_trpc/server";
 
-import { trpc } from "@/app/_trpc/client";
-import DashboardView from "./dashboard-page-view";
-import { redirect } from "next/navigation";
-
-const DashboardPageController = () => {
-  const { data: board, isError } = trpc.boards.all.useQuery();
-
-  if (isError) redirect("/");
-  if (!board) return null;
+const DashboardPageController = async () => {
+  const boards = await api.boards.all();
 
   return (
     <>
-      <DashboardView boards={board} />
+      <DashboardPageView boards={boards} />
     </>
   );
 };

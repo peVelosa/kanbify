@@ -2,7 +2,7 @@ import { isAllowedTo } from "@/app/actions/get-role";
 import { auth } from "@/server/auth";
 import { db } from "@/server/db";
 import { initTRPC, TRPCError } from "@trpc/server";
-import { z, ZodError } from "zod";
+import { ZodError } from "zod";
 
 export const createTRPCContext = async (opts: { headers: Headers }) => {
   const session = await auth();
