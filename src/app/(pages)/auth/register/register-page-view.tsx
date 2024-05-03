@@ -16,7 +16,7 @@ import { useForm } from "react-hook-form";
 
 import PasswordInput from "@/app/(pages)/auth/_components/form/password-input";
 import { useEffect, useState } from "react";
-import Requirements from "./requirements";
+import Requirements from "../_components/form/requirements";
 import FormError from "@/app/(pages)/auth/_components/form/form-error";
 import FormSuccess from "@/app/(pages)/auth/_components/form/form-success";
 import FormWarning from "@/app/(pages)/auth/_components/form/form-warning";
@@ -30,10 +30,16 @@ import {
   RegexUpperCase,
 } from "@/server/api/routers/auth/schemas";
 
-export default function RegisterForm() {
-  const [message, setMessage] = useState<any>({ error: "", success: "" });
-
+export default function RegisterPageView() {
   const { mutateAsync: register } = trpc.auth.register.useMutation();
+
+  const [message, setMessage] = useState<any>(null);
+  const [requirements, setRequirements] = useState({
+    upperCase: false,
+    lowerCase: false,
+    number: false,
+    specialCharacter: false,
+  });
 
   const form = useForm<TRegisterSchema>({
     resolver: zodResolver(RegisterSchema),
@@ -43,13 +49,6 @@ export default function RegisterForm() {
       password: "",
       confirm_password: "",
     },
-  });
-
-  const [requirements, setRequirements] = useState({
-    upperCase: false,
-    lowerCase: false,
-    number: false,
-    specialCharacter: false,
   });
 
   const password = form.watch("password");
@@ -138,8 +137,8 @@ export default function RegisterForm() {
           )}
         />
         <FormError error={message?.error} />
-        <FormSuccess success={message?.success} />
         <FormWarning warning={message?.warning} />
+        <FormSuccess success={message?.success} />
         <Button
           type="submit"
           className="w-full"

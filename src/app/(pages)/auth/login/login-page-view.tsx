@@ -17,7 +17,7 @@ import { signIn } from "@/app/actions/login";
 import FormError from "@/app/(pages)/auth/_components/form/form-error";
 import FormWarning from "@/app/(pages)/auth/_components/form/form-warning";
 import { useState } from "react";
-import ResendVerificationEmail from "./resend-verification-email";
+import ResendVerificationEmail from "../_components/resend-verification-email";
 import { useSearchParams } from "next/navigation";
 import { trpc } from "@/app/_trpc/client";
 import { LoginSchema, type TLoginSchema } from "@/server/api/routers/auth/schemas";
@@ -25,14 +25,16 @@ import { LoginSchema, type TLoginSchema } from "@/server/api/routers/auth/schema
 export default function LoginForm() {
   const searchParams = useSearchParams();
 
+  const callbackEmail = searchParams.get("callbackEmail");
+
   const { mutateAsync: login } = trpc.auth.login.useMutation();
 
-  const [message, setMessage] = useState<any>("");
+  const [message, setMessage] = useState<any>(null);
 
   const form = useForm<TLoginSchema>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
-      email: searchParams.get("callbackEmail") || "",
+      email: callbackEmail || "",
       password: "",
     },
   });

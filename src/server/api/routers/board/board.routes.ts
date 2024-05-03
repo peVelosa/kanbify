@@ -1,6 +1,7 @@
-import { desiredRoleProcedure, privateProcedure } from "@/server/api/trpc";
+import { privateProcedure } from "@/server/api/trpc";
 import { TRPCError } from "@trpc/server";
-import { BoardSchemaByIdOrDelete, BoardSchemaCreateOrUpdate } from "./schemas";
+import { BoardSchemaId, BoardSchemaCreateOrUpdate } from "./schemas";
+import { ownerProcedure, adminOrOwnerProcedure } from "./boards.procedures";
 
 export const boardsRouters = {
   all: privateProcedure.query(async ({ ctx }) => {
@@ -42,7 +43,7 @@ export const boardsRouters = {
       throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Error fetching boards" });
     }
   }),
-  byId: privateProcedure.input(BoardSchemaByIdOrDelete).query(async ({ ctx, input: { bid } }) => {
+  byId: privateProcedure.input(BoardSchemaId).query(async ({ ctx, input: { bid } }) => {
     try {
       return await ctx.db.board.findUnique({
         where: {
@@ -128,24 +129,22 @@ export const boardsRouters = {
         });
       }
     }),
-  delete: desiredRoleProcedure
-    .input(BoardSchemaByIdOrDelete)
-    .mutation(async ({ ctx, input: { bid } }) => {
-      try {
-        await ctx.db.board.delete({
-          where: {
-            id: bid,
-            owner_id: ctx.session.user.id,
-          },
-        });
+  delete: ownerProcedure.input(BoardSchemaId).mutation(async ({ ctx, input: { bid } }) => {
+    try {
+      await ctx.db.board.delete({
+        where: {
+          id: bid,
+          owner_id: ctx.session.user.id,
+        },
+      });
 
-        return { success: true, message: "Board Deleted" };
-      } catch (error) {
-        console.error(error);
-        throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Error deleting board" });
-      }
-    }),
-  update: desiredRoleProcedure
+      return { success: true, message: "Board Deleted" };
+    } catch (error) {
+      console.error(error);
+      throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Error deleting board" });
+    }
+  }),
+  update: adminOrOwnerProcedure
     .input(BoardSchemaCreateOrUpdate)
     .mutation(async ({ ctx, input: { bid, title, description } }) => {
       try {

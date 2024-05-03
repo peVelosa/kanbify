@@ -1,7 +1,6 @@
 import { verificationEmail } from "@/actions/send-emails/verification-email";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
-import useResendEmail from "./use-resend-email";
+import useResendEmail from "../login/use-resend-email";
 
 type ResendVerificationEmailProps = {
   warning?: string;

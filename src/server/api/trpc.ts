@@ -54,28 +54,3 @@ const ensureAuthentication = t.middleware(async ({ ctx, next }) => {
 export const publicProcedure = t.procedure;
 
 export const privateProcedure = t.procedure.use(ensureAuthentication);
-
-export const desiredRoleProcedure = privateProcedure
-  .input(
-    z.object({
-      bid: z.string().trim().uuid(),
-      desiredRole: z.array(z.enum(["OWNER", "ADMIN", "EMPLOYEE", "VISIT"])).default(["VISIT"]),
-    }),
-  )
-  .use(async ({ ctx, next, input }) => {
-    const { bid, desiredRole } = input;
-
-    const isDesiredRole = await isAllowedTo({
-      user_id: ctx.session.user.id,
-      bid,
-      desiredRole,
-    });
-
-    if (!isDesiredRole) throw new TRPCError({ code: "FORBIDDEN" });
-
-    return next({
-      ctx: {
-        session: { ...ctx.session },
-      },
-    });
-  });

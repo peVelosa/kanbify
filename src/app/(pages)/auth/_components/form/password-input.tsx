@@ -23,6 +23,7 @@ export default function PasswordInput<T>({ field }: { field: T }) {
           type="button"
           onClick={toogleVisible}
           size={"sm"}
+          tabIndex={-1}
         >
           {isVisible ? <FaRegEyeSlash /> : <FaRegEye />}
         </Button>

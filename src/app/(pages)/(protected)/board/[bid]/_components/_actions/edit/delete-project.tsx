@@ -12,7 +12,6 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { useCurrentUser } from "@/hooks/use-current-user";
 import { useParams } from "next/navigation";
 import useDeleteBoard from "@/hooks/mutations/use-delete-board";
 import { DeleteBoardSchema } from "@/schemas/delete-board";

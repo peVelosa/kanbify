@@ -13,8 +13,10 @@ const useDeleteBoard = () => {
       await utils.boards.all.cancel();
       const previousBoards = utils.boards.all.getData();
 
+      if (!previousBoards) return { previousBoards };
+
       utils.boards.all.setData(undefined, (old: typeof previousBoards) => ({
-        ...old!,
+        ...old,
         boardsOwned: [...old?.boardsOwned!].filter((b) => b.id !== data.bid),
       }));
 
@@ -22,6 +24,7 @@ const useDeleteBoard = () => {
     },
     onError: (error, variables, context) => {
       utils.boards.all.setData(undefined, context?.previousBoards);
+
       toast({
         title: "Error",
         description: error.message,

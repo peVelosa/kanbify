@@ -16,11 +16,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import { CreateBoardSchema, TCreateBoardSchema } from "@/schemas/create-board";
 import useNewBoard from "@/hooks/mutations/use-new-board";
-import { useCurrentUser } from "@/hooks/use-current-user";
+import { trpc } from "@/app/_trpc/client";
 
 export default function NewBoardDialog() {
   const [isOpen, setIsOpen] = useState(false);
-  const { data: user } = useCurrentUser();
+  const { data: user } = trpc.user.me.useQuery();
 
   const form = useForm<TCreateBoardSchema>({
     resolver: zodResolver(CreateBoardSchema),

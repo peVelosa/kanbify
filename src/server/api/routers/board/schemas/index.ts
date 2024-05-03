@@ -1,2 +1,1 @@
-export * from "./board.schema.byId";
-export * from "./board.schema.create";
+export * from "./board.schemas";

@@ -13,7 +13,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import useUpdateBoard from "@/hooks/mutations/use-update-board";
 import { useBoard } from "@/hooks/use-board";
-import { useCurrentUser } from "@/hooks/use-current-user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import DeleteProjectForm from "./delete-project";
 import AllowTo from "../../board/allow-to";

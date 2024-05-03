@@ -1,8 +1,7 @@
 import FormCard from "../_components/form/form-card";
-import LoginForm from "./features/form/login-form";
-import { Suspense } from "react";
+import LoginPageView from "./login-page-view";
 
-export default function LoginView() {
+export default function LoginPageModel() {
   return (
     <>
       <FormCard
@@ -10,9 +9,7 @@ export default function LoginView() {
         btnLabel="Don't have an account??"
         subtitle="Welcome back!"
       >
-        <Suspense fallback={<h1>loading...</h1>}>
-          <LoginForm />
-        </Suspense>
+        <LoginPageView />
       </FormCard>
     </>
   );

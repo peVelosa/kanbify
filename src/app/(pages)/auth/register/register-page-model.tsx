@@ -1,7 +1,7 @@
 import FormCard from "../_components/form/form-card";
-import RegisterForm from "./features/form/register-form";
+import RegisterPageView from "./register-page-view";
 
-export default function RegisterView() {
+export default function RegisterPageModel() {
   return (
     <>
       <FormCard
@@ -9,7 +9,7 @@ export default function RegisterView() {
         btnLabel="Already have an account?"
         subtitle="Create your account!"
       >
-        <RegisterForm />
+        <RegisterPageView />
       </FormCard>
     </>
   );

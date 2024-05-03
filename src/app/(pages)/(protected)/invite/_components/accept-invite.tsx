@@ -2,7 +2,7 @@
 
 import api from "@/app/api/api";
 import { Button } from "@/components/ui/button";
-import { useCurrentUser } from "@/hooks/use-current-user";
+import { trpc } from "@/app/_trpc/client";
 import { useState } from "react";
 
 type AcceptInviteProps = {
@@ -10,7 +10,7 @@ type AcceptInviteProps = {
 };
 
 const AcceptInvite = ({ bid }: AcceptInviteProps) => {
-  const { data: user } = useCurrentUser();
+  const { data: user } = trpc.user.me.useQuery();
 
   const [message, setMessage] = useState<string>("");
 
