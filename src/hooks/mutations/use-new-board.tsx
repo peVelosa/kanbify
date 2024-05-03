@@ -1,58 +1,57 @@
 "use client";
 
-import { newBoard } from "@/actions/create-board";
-import { TCreateBoardSchema } from "@/actions/create-board/type";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useCurrentUser } from "../use-current-user";
 import { useToast } from "@/components/ui/use-toast";
-import { TBoards } from "@/app/actions/get-boards/type";
+import { trpc } from "@/app/_trpc/client";
 
 export default function useNewBoard() {
-  const queryClient = useQueryClient();
-  const { data: user } = useCurrentUser();
   const { toast } = useToast();
+  const utils = trpc.useUtils();
 
-  return useMutation({
+  return trpc.boards.create.useMutation({
     mutationKey: ["new-board"],
-    mutationFn: (data: TCreateBoardSchema) =>
-      newBoard({ ...data, userId: user?.id }),
-    onMutate: (data) => {
-      const previousBoards = queryClient.getQueryData(["boards"]);
+    onMutate: async (data) => {
+      await utils.boards.all.cancel();
+      const previousBoards = utils.boards.all.getData();
 
-      queryClient.setQueryData(["boards"], (old: TBoards) => ({
-        ...old!,
-        boardsOwned: [
-          ...old?.boardsOwned!,
-          {
-            id: "temp-id",
-            title: data.title,
-            description: data.description,
-            _count: {
-              collaborators: 0,
-            },
-          },
-        ],
-      }));
+      utils.boards.all.setData(
+        undefined,
+        (old: typeof previousBoards) =>
+          ({
+            boardsCollaborated: [...old?.boardsCollaborated!],
+            boardsOwned: [
+              ...old?.boardsOwned!,
+              {
+                id: "temp-id",
+                title: data.title,
+                description: data.description,
+                _count: {
+                  collaborators: 1,
+                },
+              },
+            ],
+          }) as typeof previousBoards,
+      );
 
       return { previousBoards };
     },
     onError(error, variables, context) {
-      queryClient.setQueryData(["boards"], context?.previousBoards);
+      utils.boards.all.setData(undefined, context?.previousBoards);
       toast({
         title: "Error",
-        description: "An error occurred while editing your board",
+        description: error.message,
         variant: "destructive",
       });
     },
-    onSuccess: () => {
+    onSuccess: ({ message }) => {
       toast({
         title: "Board created",
-        description: "Your board has been created successfully",
+        description: message,
         variant: "default",
       });
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["boards"] });
+      console.log("refetching");
+      utils.boards.all.invalidate();
     },
   });
 }

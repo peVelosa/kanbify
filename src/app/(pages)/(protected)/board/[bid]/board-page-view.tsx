@@ -2,11 +2,13 @@
 
 import BoardInfo from "./_components/board/board-info";
 import BoardColumn from "./_components/board/board-column";
-import { Board } from "@/types/board";
+import { type Board } from "@/types/trpc";
 
-export default function BoardPageView({ board }: { board: Board }) {
-  if (!board) return null;
+type BoardPageViewProps = {
+  board: Board;
+};
 
+export default function BoardPageView({ board }: BoardPageViewProps) {
   const info = {
     id: board.id,
     title: board.title,

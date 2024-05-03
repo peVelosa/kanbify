@@ -19,7 +19,10 @@ const Edit = () => {
   return (
     <>
       <AllowTo allowTo={["ADMIN", "OWNER"]}>
-        <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <Dialog
+          open={isOpen}
+          onOpenChange={setIsOpen}
+        >
           <DialogTrigger asChild>
             <Button className="flex w-full gap-4">
               Edit <FaEdit />

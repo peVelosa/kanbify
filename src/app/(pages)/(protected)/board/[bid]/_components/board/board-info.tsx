@@ -1,15 +1,10 @@
 "use client";
 
 import EditButton from "../_actions/edit/edit";
-import AllowTo from "./allow-to";
 import Invite from "../_actions/invite/invite";
+import { Board } from "@/types/trpc";
 
-type BoardInfoProps = {
-  id: string;
-  title: string;
-  createdAt: Date;
-  description: string | null | undefined;
-};
+type BoardInfoProps = Omit<Board, "columns">;
 
 export default function BoardInfo({ id, title, description, createdAt }: BoardInfoProps) {
   return (
@@ -23,7 +18,7 @@ export default function BoardInfo({ id, title, description, createdAt }: BoardIn
             year: "numeric",
             month: "long",
             day: "numeric",
-          }).format(createdAt)}
+          })?.format(new Date(createdAt))}
         </p>
       </div>
       <div className="space-y-4">

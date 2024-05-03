@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import Navbar from "./_components/navbar";
-import { auth } from "@/auth";
+import { auth } from "@/server/auth";
 
 export async function generateMetadata(): Promise<Metadata> {
   const user = await auth();

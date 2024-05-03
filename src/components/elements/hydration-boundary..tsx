@@ -1,28 +1,16 @@
-import getQueryClient from "@/app/getQueryClient";
-import {
-  dehydrate,
-  QueryFunction,
-  QueryKey,
-  HydrationBoundary as HydrationBoundaryBase,
-} from "@tanstack/react-query";
+import { dehydrate, HydrationBoundary as HydrationBoundaryBase } from "@tanstack/react-query";
 
 type HydrationBoundaryProps = {
-  queryKey: QueryKey;
-  queryFn: QueryFunction;
   children: React.ReactNode;
 };
 
-const HydrationBoundary = async ({ queryKey, queryFn, children }: HydrationBoundaryProps) => {
-  const queryClient = getQueryClient();
-  await queryClient.prefetchQuery({
-    queryKey,
-    queryFn,
-  });
-  const dehydratedState = dehydrate(queryClient);
+const HydrationBoundary = async ({ children }: HydrationBoundaryProps) => {
+  // const dehydratedState = dehydrate(serverClient.queryClient);
 
   return (
     <>
-      <HydrationBoundaryBase state={dehydratedState}>{children}</HydrationBoundaryBase>
+      {/* <HydrationBoundaryBase state={dehydratedState}>{children}</HydrationBoundaryBase> */}
+      {children}
     </>
   );
 };

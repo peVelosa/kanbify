@@ -1,28 +1,17 @@
-"use server";
-
-import { db } from "@/lib/db";
+import { api } from "@/app/_trpc/server";
 import InvitePageView from "./invite-page-view";
 
-export type Invite = Awaited<ReturnType<typeof fetchInvite>>;
-
-const fetchInvite = async (iid: string) => {
-  return await db.invite.findFirst({
-    where: {
-      id: iid,
-    },
-    select: {
-      board_id: true,
-      board_title: true,
-    },
-  });
-};
-
 const InvitePageController = async ({ iid }: { iid: string }) => {
-  const invite = await fetchInvite(iid);
+  const invite = await api.boards.invite.get({
+    iid,
+  });
 
   return (
     <>
-      <InvitePageView invite={invite} />
+      <InvitePageView
+        invite={invite}
+        iid={iid}
+      />
     </>
   );
 };

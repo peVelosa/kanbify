@@ -1,25 +1,31 @@
-import VerifyEmailView from "./verify-email-view";
-import { fetchVerification, fetchAlreadyVerified, verifyEmail } from "../services/api";
+import VerifyEmailModel from "./verify-email-model";
+import { api } from "@/app/_trpc/server";
 
-export type Verification = Awaited<ReturnType<typeof fetchVerification>>;
+export type Verification = Awaited<ReturnType<typeof api.user.verifyEmail.invite>>;
 
 export default async function VerificationPage({ params: { vid } }: { params: { vid: string } }) {
-  const verification = await fetchVerification(vid);
+  const verification = await api.user.verifyEmail.invite({ vid });
 
-  if (!verification) return <VerifyEmailView verification={verification} />;
+  if (!verification) return <VerifyEmailModel status={"invalid"} />;
 
-  const alreadyVerified = await fetchAlreadyVerified(verification.identifier);
+  const user = await api.user.verifyEmail.user({
+    email: verification.identifier,
+  });
 
-  if (alreadyVerified?.emailVerified)
+  if (!user.verified)
     return (
-      <VerifyEmailView
-        alreadyVerified
-        verification={verification}
-        callbackEmail={verification.identifier}
+      <VerifyEmailModel
+        status={"firstTimeVerified"}
+        callbackEmail={user.email}
       />
     );
 
-  await verifyEmail(verification.identifier);
+  await api.user.verifyEmail.verify({ email: verification.identifier });
 
-  return <VerifyEmailView verification={verification} callbackEmail={verification.identifier} />;
+  return (
+    <VerifyEmailModel
+      status={"alreadyVerified"}
+      callbackEmail={user.email}
+    />
+  );
 }

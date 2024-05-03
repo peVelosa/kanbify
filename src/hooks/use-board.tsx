@@ -1,15 +1,12 @@
 "use client";
 
-import { getBoard } from "@/actions/get-board-info";
-import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
+import { trpc } from "@/app/_trpc/client";
 
 export const useBoard = () => {
   const params = useParams() as { bid: string };
 
-  return useQuery({
-    queryKey: ["boards", params.bid],
-    queryFn: () => getBoard({ bid: params.bid }),
-    enabled: !!params.bid,
+  return trpc.boards.byId.useQuery({
+    bid: params.bid,
   });
 };

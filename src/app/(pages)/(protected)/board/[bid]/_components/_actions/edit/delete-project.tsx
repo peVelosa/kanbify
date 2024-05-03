@@ -12,15 +12,13 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { useCurrentUser } from "@/hooks/use-current-user";
 import { useParams } from "next/navigation";
 import useDeleteBoard from "@/hooks/mutations/use-delete-board";
-import { DeleteBoardSchema } from "@/actions/delete-board/schema";
+import { DeleteBoardSchema } from "@/server/api/routers/board/schemas";
 
 const DeleteProject = () => {
   const params = useParams() as { bid: string };
-  const { data: user } = useCurrentUser();
-  const { mutate } = useDeleteBoard({ bid: params.bid });
+  const { mutate } = useDeleteBoard();
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -30,17 +28,29 @@ const DeleteProject = () => {
 
   const handleDelete = () => {
     const validatedFields = DeleteBoardSchema.safeParse({
-      deleteProject: confirmDeletion,
+      bid: params.bid,
+      deleteMessageConfirmation: confirmDeletion,
     });
+
     if (!validatedFields.success) return;
-    mutate({ bid: params.bid, user_id: user?.id! });
+
+    mutate({
+      bid: params.bid,
+      deleteMessageConfirmation: confirmDeletion,
+    });
   };
 
   return (
     <>
-      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <Dialog
+        open={isOpen}
+        onOpenChange={setIsOpen}
+      >
         <DialogTrigger asChild>
-          <Button variant="destructive" className="font-bold">
+          <Button
+            variant="destructive"
+            className="font-bold"
+          >
             Delete
           </Button>
         </DialogTrigger>
@@ -48,14 +58,16 @@ const DeleteProject = () => {
           <DialogHeader>
             <DialogTitle>Are you absolutely sure?</DialogTitle>
             <DialogDescription>
-              This action cannot be undone. This will permanently delete your
-              board and remove your data from our servers.
+              This action cannot be undone. This will permanently delete your board and remove your
+              data from our servers.
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-2">
-            <Label htmlFor="board-title" className="font-normal">
-              type <span className="font-bold">delete my project</span> to
-              enable the delete button
+            <Label
+              htmlFor="board-title"
+              className="font-normal"
+            >
+              type <span className="font-bold">delete my project</span> to enable the delete button
             </Label>
             <Input
               id="board-title"
@@ -65,7 +77,11 @@ const DeleteProject = () => {
             />
           </div>
           <DialogFooter className="gap-2 sm:gap-1">
-            <Button variant={"default"} onClick={handleClose} className="block">
+            <Button
+              variant={"default"}
+              onClick={handleClose}
+              className="block"
+            >
               Cancel
             </Button>
             <Button

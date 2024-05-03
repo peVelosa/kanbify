@@ -1,7 +1,8 @@
 import { redirect } from "next/navigation";
-import { getBoard } from "@/app/actions/get-board-info";
 import BoardPageController from "./board-page-controller";
 import HydrationBoundary from "@/components/elements/hydration-boundary.";
+import { auth } from "@/server/auth";
+import getBoard from "@/app/actions/get-board";
 
 type BoardPageProps = {
   params: {
@@ -10,14 +11,15 @@ type BoardPageProps = {
 };
 
 export default async function BoardPage({ params: { bid } }: BoardPageProps) {
-  if (!bid) return redirect("/dashboard");
+  const session = await auth();
+
+  const isValidBoard = await getBoard(bid, session?.user?.id);
+
+  if (!isValidBoard) redirect("/dashboard");
 
   return (
     <>
-      <HydrationBoundary
-        queryKey={["boards", bid]}
-        queryFn={() => getBoard({ bid })}
-      >
+      <HydrationBoundary>
         <BoardPageController />
       </HydrationBoundary>
     </>

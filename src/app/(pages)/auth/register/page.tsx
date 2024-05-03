@@ -1,9 +1,9 @@
-import RegisterView from "./register-view";
+import RegisterPageModel from "./register-page-model";
 
 export default function RegisterPage() {
   return (
     <>
-      <RegisterView />
+      <RegisterPageModel />
     </>
   );
 }

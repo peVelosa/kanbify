@@ -1,14 +1,12 @@
-"use client";
+import DashboardPageView from "./dashboard-page-view";
+import { api } from "@/app/_trpc/server";
 
-import DashboardView from "./dashboard-page-view";
-import { useBoards } from "@/hooks/use-boards";
-
-const DashboardPageController = () => {
-  const { data: boards } = useBoards();
+const DashboardPageController = async () => {
+  const boards = await api.boards.all();
 
   return (
     <>
-      <DashboardView boards={boards} />
+      <DashboardPageView boards={boards} />
     </>
   );
 };

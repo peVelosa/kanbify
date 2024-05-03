@@ -10,24 +10,30 @@ import {
 import { useForm } from "react-hook-form";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
-import { TEditBoardSchema } from "@/app/actions/edit-board/type";
 import { Button } from "@/components/ui/button";
-import { EditBoardSchema } from "@/app/actions/edit-board/schema";
-import useEditForm from "@/hooks/mutations/use-edit-form";
+import useUpdateBoard from "@/hooks/mutations/use-update-board";
 import { useBoard } from "@/hooks/use-board";
-import { useCurrentUser } from "@/hooks/use-current-user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import DeleteProjectForm from "./delete-project";
 import AllowTo from "../../board/allow-to";
+import { z } from "zod";
+import { TEditBoardSchema } from "@/schemas";
+import { useParams } from "next/navigation";
+
+export const EditBoardSchema = z.object({
+  title: z.string().min(3).trim(),
+  description: z.string().optional().default(""),
+});
 
 type EditFormProps = {
   onClick: () => void;
 };
 
 const EditForm = ({ onClick }: EditFormProps) => {
+  const params = useParams() as { bid: string };
+
   const { data: board } = useBoard();
-  const { data: user } = useCurrentUser();
-  const { mutate } = useEditForm({ bid: board!.id });
+  const { mutate } = useUpdateBoard({ bid: params.bid });
 
   const form = useForm<TEditBoardSchema>({
     resolver: zodResolver(EditBoardSchema),
@@ -39,12 +45,11 @@ const EditForm = ({ onClick }: EditFormProps) => {
 
   const onSubmit = form.handleSubmit(async (values: TEditBoardSchema) => {
     onClick();
+
     mutate({
-      bid: board?.id,
+      bid: params.bid,
       description: values.description,
       title: values.title,
-      user_id: user?.id,
-      titleChanged: values.title !== board?.title,
     });
   });
 
@@ -61,7 +66,10 @@ const EditForm = ({ onClick }: EditFormProps) => {
               <FormItem>
                 <FormLabel>Title</FormLabel>
                 <FormControl>
-                  <Input placeholder="john.doe@email.com" {...field} />
+                  <Input
+                    placeholder="john.doe@email.com"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -74,7 +82,10 @@ const EditForm = ({ onClick }: EditFormProps) => {
               <FormItem>
                 <FormLabel>Description</FormLabel>
                 <FormControl>
-                  <Textarea placeholder="Description of your project" {...field} />
+                  <Textarea
+                    placeholder="Description of your project"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -86,7 +97,11 @@ const EditForm = ({ onClick }: EditFormProps) => {
         <DeleteProjectForm />
       </AllowTo>
       <div className="flex items-center justify-end gap-4">
-        <Button type="button" variant={"outline"} onClick={onClick}>
+        <Button
+          type="button"
+          variant={"outline"}
+          onClick={onClick}
+        >
           Cancel
         </Button>
         <Button
