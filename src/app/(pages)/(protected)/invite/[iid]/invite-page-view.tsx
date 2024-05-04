@@ -1,7 +1,7 @@
 import Link from "next/link";
 import AcceptInvite from "./_components/accept-invite";
 import { Button } from "@/components/ui/button";
-import { InviteGet } from "@/types/trpc";
+import type { InviteGet } from "@/types/trpc";
 
 type InvitePageViewProps = {
   invite: InviteGet;

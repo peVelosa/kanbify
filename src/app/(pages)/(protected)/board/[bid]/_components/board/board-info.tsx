@@ -2,11 +2,11 @@
 
 import EditButton from "../_actions/edit/edit";
 import Invite from "../_actions/invite/invite";
-import { Board } from "@/types/trpc";
+import type { Board } from "@/types/trpc";
 
-type BoardInfoProps = Omit<Board, "columns">;
+type BoardInfoProps = Omit<Board, "columns" | "id">;
 
-export default function BoardInfo({ id, title, description, createdAt }: BoardInfoProps) {
+export default function BoardInfo({ title, description, createdAt }: BoardInfoProps) {
   return (
     <div className="container flex items-start justify-between">
       <div>

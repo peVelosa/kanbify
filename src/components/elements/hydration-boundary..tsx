@@ -1,4 +1,4 @@
-import { dehydrate, HydrationBoundary as HydrationBoundaryBase } from "@tanstack/react-query";
+// import { dehydrate, HydrationBoundary as HydrationBoundaryBase } from "@tanstack/react-query";
 
 type HydrationBoundaryProps = {
   children: React.ReactNode;

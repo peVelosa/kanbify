@@ -1,4 +1,4 @@
-import { privateProcedure, publicProcedure } from "@/server/api/trpc";
+import { publicProcedure } from "@/server/api/trpc";
 import { verificationEmail } from "@/app/actions/send-emails/verification-email";
 import { LoginSchema, RegisterSchema } from "./schemas";
 import bcrypt from "bcryptjs";

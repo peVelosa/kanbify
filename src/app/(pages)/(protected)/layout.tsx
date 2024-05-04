@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import Navbar from "./_components/navbar";
 import { auth } from "@/server/auth";
 

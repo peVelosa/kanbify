@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import TabsProvider from "@/providers/tabs-provider";
-import { ClassValue } from "clsx";
+import type { ClassValue } from "clsx";
 
 type TabsProps = {
   defaultActive?: string;

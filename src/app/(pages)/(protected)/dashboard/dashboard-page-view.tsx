@@ -6,7 +6,7 @@ import Tabs from "@/components/elements/tabs/tabs";
 import TabsList from "@/components/elements/tabs/tabs-list";
 import TabsTrigger from "@/components/elements/tabs/tabs-trigger";
 import TabsContent from "@/components/elements/tabs/tabs-content";
-import { Boards } from "@/types/board";
+import type { Boards } from "@/types/trpc";
 
 export default function DashboardPageView({ boards }: { boards: Boards }) {
   return (

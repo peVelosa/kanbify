@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/server/db";
-import { $Enums } from "@prisma/client";
+import type { $Enums } from "@prisma/client";
 
 export async function isAllowedTo({
   bid,

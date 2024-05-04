@@ -7,7 +7,7 @@ import { getUserByEmail } from "@/actions/get-user";
 export const authConfig = {
   providers: [
     Credentials({
-      async authorize(credentials, request) {
+      async authorize(credentials, _) {
         const validatedFields = LoginSchema.safeParse(credentials);
 
         if (!validatedFields.success) return null;
@@ -26,7 +26,7 @@ export const authConfig = {
     }),
   ],
   callbacks: {
-    async session({ session, token, user: as }) {
+    async session({ session, token }) {
       const user = await getUserByEmail(token.email);
 
       if (user) {

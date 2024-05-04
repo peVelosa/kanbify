@@ -1,12 +1,9 @@
 import {
   Body,
-  Button,
   Container,
   Head,
   Heading,
-  Hr,
   Html,
-  Img,
   Link,
   Preview,
   Section,
@@ -23,10 +20,7 @@ const baseUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
   : "http://localhost:3000";
 
-export const VerificationLink = ({
-  verificationTokenId,
-  expiresAt,
-}: VerificationLinkProps) => {
+export const VerificationLink = ({ verificationTokenId, expiresAt }: VerificationLinkProps) => {
   const url = `${baseUrl}/verify/${verificationTokenId}`;
 
   return (
@@ -38,7 +32,10 @@ export const VerificationLink = ({
           <Heading style={heading}>🪄 Your verification link</Heading>
           <Section style={body}>
             <Text style={paragraph}>
-              <Link style={link} href={url}>
+              <Link
+                style={link}
+                href={url}
+              >
                 👉 Click here to verify 👈
               </Link>
             </Text>
@@ -99,15 +96,4 @@ const paragraph = {
 
 const link = {
   color: "#FF6363",
-};
-
-const hr = {
-  borderColor: "#dddddd",
-  marginTop: "48px",
-};
-
-const footer = {
-  color: "#8898aa",
-  fontSize: "12px",
-  marginLeft: "4px",
 };

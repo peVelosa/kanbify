@@ -20,6 +20,6 @@ export const userRoutes = {
     });
     return user;
   }),
-  resetPassword: publicProcedure.mutation(async ({ ctx }) => {}),
+  resetPassword: publicProcedure.mutation(async ({}) => {}),
   verifyEmail: verifyRoutes,
 };

@@ -13,14 +13,18 @@ import InviteLink from "./invite-link";
 const Invite = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleClose = () => setIsOpen(false);
-
   return (
     <>
       <AllowTo allowTo={["ADMIN", "OWNER"]}>
-        <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <Dialog
+          open={isOpen}
+          onOpenChange={setIsOpen}
+        >
           <DialogTrigger asChild>
-            <Button className="flex w-full gap-4" variant={"outline"}>
+            <Button
+              className="flex w-full gap-4"
+              variant={"outline"}
+            >
               Invite
             </Button>
           </DialogTrigger>

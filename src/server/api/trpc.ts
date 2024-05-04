@@ -1,4 +1,3 @@
-import { isAllowedTo } from "@/app/actions/get-role";
 import { auth } from "@/server/auth";
 import { db } from "@/server/db";
 import { initTRPC, TRPCError } from "@trpc/server";

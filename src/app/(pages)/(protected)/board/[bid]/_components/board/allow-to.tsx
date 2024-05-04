@@ -1,6 +1,6 @@
 import { useCollaboratorRole } from "@/hooks/use-collaborator-role";
-import { $Enums } from "@prisma/client";
 import { useParams } from "next/navigation";
+import type { $Enums } from "@prisma/client";
 
 type AllowTo = {
   allowTo: $Enums.ROLE[];
