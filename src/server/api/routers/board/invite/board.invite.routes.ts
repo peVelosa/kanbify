@@ -1,6 +1,6 @@
 import { privateProcedure } from "@/server/api/trpc";
 import { TRPCError } from "@trpc/server";
-import { GetInviteSchema, AcceptInviteSchema, GenerateInviteSchema } from "./schemas";
+import { GetInviteSchema, AcceptInviteSchema, GenerateInviteSchema, GetSchema } from "./schemas";
 
 export const inviteRoutes = {
   get: privateProcedure.input(GetInviteSchema).query(async ({ ctx, input }) => {
@@ -99,6 +99,24 @@ export const inviteRoutes = {
           board_id: bid,
           board_title: boardTitle.title,
           expires: new Date(new Date().getTime() + 1000 * 60 * 3),
+        },
+      });
+
+      return invite;
+    } catch (e) {
+      console.error(e);
+      throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+    }
+  }),
+  find: privateProcedure.input(GetSchema).query(async ({ ctx, input }) => {
+    const { bid } = input;
+
+    if (!bid) throw new TRPCError({ code: "BAD_REQUEST" });
+
+    try {
+      const invite = await ctx.db.invite.findUnique({
+        where: {
+          board_id: bid,
         },
       });
 

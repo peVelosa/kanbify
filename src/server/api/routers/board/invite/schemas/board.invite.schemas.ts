@@ -12,3 +12,7 @@ export const AcceptInviteSchema = z.object({
 export const GenerateInviteSchema = z.object({
   bid: z.string(),
 });
+
+export const GetSchema = z.object({
+  bid: z.string().optional(),
+});

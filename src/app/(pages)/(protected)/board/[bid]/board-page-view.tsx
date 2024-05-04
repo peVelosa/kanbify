@@ -5,7 +5,7 @@ import BoardColumn from "./_components/board/board-column";
 import { type Board } from "@/types/trpc";
 
 type BoardPageViewProps = {
-  board: Board;
+  board: NonNullable<Board>;
 };
 
 export default function BoardPageView({ board }: BoardPageViewProps) {

@@ -1,13 +1,13 @@
-"use client";
-
-import { useBoard } from "@/hooks/use-board";
 import BoardPageView from "./board-page-view";
-import { redirect } from "next/navigation";
+import { api } from "@/app/_trpc/server";
 
-const BoardPageController = () => {
-  const { data: board, isError } = useBoard();
+type BoardPageControllerProps = {
+  bid: string;
+};
 
-  if (isError) redirect("/dashboard");
+const BoardPageController = async ({ bid }: BoardPageControllerProps) => {
+  const board = await api.boards.byId({ bid });
+
   if (!board) return null;
 
   return (

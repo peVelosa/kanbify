@@ -4,7 +4,7 @@ import EditButton from "../_actions/edit/edit";
 import Invite from "../_actions/invite/invite";
 import type { Board } from "@/types/trpc";
 
-type BoardInfoProps = Omit<Board, "columns" | "id">;
+type BoardInfoProps = Omit<NonNullable<Board>, "columns" | "id">;
 
 export default function BoardInfo({ title, description, createdAt }: BoardInfoProps) {
   return (

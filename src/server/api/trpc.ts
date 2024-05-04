@@ -2,6 +2,7 @@ import { auth } from "@/server/auth";
 import { db } from "@/server/db";
 import { initTRPC, TRPCError } from "@trpc/server";
 import { ZodError } from "zod";
+import { transformer } from "@/lib/utils";
 
 export const createTRPCContext = async (opts: { headers: Headers }) => {
   const session = await auth();
@@ -20,6 +21,7 @@ type createTRPCContext = Awaited<ReturnType<typeof createTRPCContext>>;
  * Should be done only once per backend!
  */
 export const t = initTRPC.context<createTRPCContext>().create({
+  transformer,
   errorFormatter: ({ shape, error }) => {
     return {
       ...shape,

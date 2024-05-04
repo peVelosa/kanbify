@@ -20,7 +20,7 @@ export default async function BoardPage({ params: { bid } }: BoardPageProps) {
   return (
     <>
       <HydrationBoundary>
-        <BoardPageController />
+        <BoardPageController bid={bid} />
       </HydrationBoundary>
     </>
   );

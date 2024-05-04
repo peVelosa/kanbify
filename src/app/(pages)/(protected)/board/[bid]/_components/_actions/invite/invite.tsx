@@ -32,9 +32,7 @@ const Invite = () => {
             <DialogHeader>
               <DialogTitle>Invite some to collaborator</DialogTitle>
             </DialogHeader>
-            <div>
-              <InviteLink />
-            </div>
+            <InviteLink />
           </DialogContent>
         </Dialog>
       </AllowTo>

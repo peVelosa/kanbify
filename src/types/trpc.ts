@@ -5,5 +5,5 @@ export type RouterOutput = inferRouterOutputs<AppRouter>;
 export type RouterInput = inferRouterInputs<AppRouter>;
 
 export type InviteGet = RouterOutput["boards"]["invite"]["get"];
-export type Board = NonNullable<RouterOutput["boards"]["byId"]>;
+export type Board = RouterOutput["boards"]["byId"];
 export type Boards = RouterOutput["boards"]["all"] | null | undefined;
