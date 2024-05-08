@@ -71,6 +71,9 @@ export const boardsRouters = {
               },
               order: true,
             },
+            orderBy: {
+              order: "asc",
+            },
           },
         },
       });

@@ -7,8 +7,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Kanbify",
-  description:
-    "Kanbify is a simple kanban board app where you can manage your team's tasks.",
+  description: "Kanbify is a simple kanban board app where you can manage your team's tasks.",
   applicationName: "Kanbify",
   authors: {
     name: "Kanbify",
@@ -27,7 +26,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className} flex h-svh flex-col overflow-hidden`}>
         <Providers>{children}</Providers>
       </body>
     </html>

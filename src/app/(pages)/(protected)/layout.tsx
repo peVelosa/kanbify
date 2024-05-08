@@ -27,7 +27,8 @@ export default function ProtectedLayout({
   return (
     <>
       <Navbar />
-      <main className="h-full overflow-hidden pt-4">{children}</main>
+      <main className="h-full w-full overflow-hidden pt-4">{children}</main>
+      {/* <main className="flex w-full flex-1 overflow-hidden pt-4">{children}</main> */}
     </>
   );
 }
