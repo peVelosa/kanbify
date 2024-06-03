@@ -7,11 +7,11 @@ export default function LoginPageModel() {
     <>
       <FormCard
         btnHref="/auth/register"
-        btnLabel="Don't have an account??"
+        btnLabel="Don't have an account?"
         subtitle="Welcome back!"
       >
         <Suspense>
-        <LoginPageView />
+          <LoginPageView />
         </Suspense>
       </FormCard>
     </>
