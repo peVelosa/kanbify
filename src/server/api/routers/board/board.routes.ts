@@ -3,6 +3,7 @@ import { TRPCError } from "@trpc/server";
 import { BoardSchemaId, BoardSchemaCreateOrUpdate, DeleteBoardSchema } from "./schemas";
 import { ownerProcedure, adminOrOwnerProcedure } from "./boards.procedures";
 import { inviteRoutes } from "./invite";
+import { columnsRoutes } from "./columns/board.columns.routes";
 
 export const boardsRouters = {
   all: privateProcedure.query(async ({ ctx }) => {
@@ -182,4 +183,5 @@ export const boardsRouters = {
       }
     }),
   invite: inviteRoutes,
+  columns: columnsRoutes,
 };

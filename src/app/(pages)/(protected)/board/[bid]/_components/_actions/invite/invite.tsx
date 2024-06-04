@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import AllowTo from "../../board/allow-to";
 import {
   Dialog,
   DialogContent,
@@ -15,27 +14,25 @@ const Invite = () => {
 
   return (
     <>
-      <AllowTo allowTo={["ADMIN", "OWNER"]}>
-        <Dialog
-          open={isOpen}
-          onOpenChange={setIsOpen}
-        >
-          <DialogTrigger asChild>
-            <Button
-              className="flex w-full gap-4"
-              variant={"outline"}
-            >
-              Invite
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Invite some to collaborator</DialogTitle>
-            </DialogHeader>
-            <InviteLink />
-          </DialogContent>
-        </Dialog>
-      </AllowTo>
+      <Dialog
+        open={isOpen}
+        onOpenChange={setIsOpen}
+      >
+        <DialogTrigger asChild>
+          <Button
+            className="flex w-full gap-4"
+            variant={"outline"}
+          >
+            Invite
+          </Button>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Invite some to collaborator</DialogTitle>
+          </DialogHeader>
+          <InviteLink />
+        </DialogContent>
+      </Dialog>
     </>
   );
 };
