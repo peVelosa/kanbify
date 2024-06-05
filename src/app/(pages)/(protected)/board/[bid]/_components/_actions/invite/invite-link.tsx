@@ -5,8 +5,6 @@ import { useBoard } from "@/hooks/use-board";
 import { useEffect, useState } from "react";
 import { trpc } from "@/app/_trpc/client";
 
-const DEFAULT_LINK = window.location.origin + "/invite";
-
 const InviteLink = () => {
   const { data: board } = useBoard();
   const { data: invite, isLoading } = trpc.boards.invite.find.useQuery(
@@ -18,7 +16,10 @@ const InviteLink = () => {
     },
   );
   const { mutateAsync: generateInvite, isPending } = trpc.boards.invite.generate.useMutation();
+
   const [link, setLink] = useState<string>("");
+
+  const DEFAULT_LINK = window.location.origin + "/invite";
 
   const generateInviteLink = async () => {
     const invite = await generateInvite({ bid: board?.id! });
@@ -28,7 +29,7 @@ const InviteLink = () => {
   useEffect(() => {
     if (!invite?.id) return;
     setLink(`${DEFAULT_LINK}/${invite?.id}`);
-  }, [invite?.id]);
+  }, [invite?.id, DEFAULT_LINK]);
 
   return (
     <>
