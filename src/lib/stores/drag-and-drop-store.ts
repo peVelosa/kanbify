@@ -3,7 +3,7 @@ import { type RouterOutput } from "@/types/trpc";
 
 type Card = RouterOutput["boards"]["cards"]["byColumnId"][0];
 type Column = {
-  id: string | null;
+  id: string;
   cards: Card[];
 };
 
@@ -19,11 +19,11 @@ type DragAndDropCard = {
 const useDragAndDropCard = create<DragAndDropCard>((set) => ({
   card: null,
   sourceColumn: {
-    id: null,
+    id: "",
     cards: [],
   },
   targetColumn: {
-    id: null,
+    id: "",
     cards: [],
     index: 0,
   },

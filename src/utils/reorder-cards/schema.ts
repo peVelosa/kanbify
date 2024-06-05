@@ -8,11 +8,11 @@ const CardSchema = z.custom<Card>((value) => value);
 export const ReorderCardsSchema = z.object({
   draggedItem: CardSchema,
   sourceColumn: z.object({
-    id: z.string().nullable(),
+    id: z.string(),
     cards: z.array(CardSchema),
   }),
   targetColumn: z.object({
-    id: z.string().nullable(),
+    id: z.string(),
     cards: z.array(CardSchema),
     index: z.number(),
   }),
