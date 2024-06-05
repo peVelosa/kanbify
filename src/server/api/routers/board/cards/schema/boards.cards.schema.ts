@@ -1,5 +1,5 @@
 import { z } from "zod";
 
-export const ColumnSchemaId = z.object({
+export const CardByColumnIdSchema = z.object({
   col_id: z.string(),
 });

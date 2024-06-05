@@ -6,6 +6,8 @@ import { Card as SCard, CardContent, CardHeader } from "@/components/ui/card";
 import Droppable from "@/components/elements/drag-and-drop/droppable";
 import { Reorder, useDragControls } from "framer-motion";
 import { type Board } from "@/types/trpc";
+import Draggable from "@/components/elements/drag-and-drop/draggable";
+import { useDragAndDropCard } from "@/lib/stores/drag-and-drop-store";
 
 type BoardColumnProps = {
   column: NonNullable<Board>["columns"][0];
@@ -14,7 +16,7 @@ type BoardColumnProps = {
 const BoardColumn = ({ column }: BoardColumnProps) => {
   const { id: col_id, title, order, _count } = column;
 
-  const { data: cards } = trpc.boards.columns.byId.useQuery({ col_id });
+  const { data: cards } = trpc.boards.cards.byColumnId.useQuery({ col_id });
   const dragControls = useDragControls();
   const grabberRef = useRef<ElementRef<"div">>(null);
 
@@ -56,13 +58,26 @@ const BoardColumn = ({ column }: BoardColumnProps) => {
             className="max-h-full overflow-auto p-0"
             onPointerDown={(e) => e.stopPropagation()}
           >
-            <Droppable index={0} />
-            {cards?.map((card, index) => (
-              <React.Fragment key={card.id}>
-                <Card {...card} />
-                <Droppable index={index + 1} />
-              </React.Fragment>
-            ))}
+            <Draggable
+              cards={cards ?? null}
+              columnId={col_id}
+            >
+              <Droppable
+                index={0}
+                cards={cards ?? []}
+                columnId={col_id}
+              />
+              {cards?.map((card, index) => (
+                <React.Fragment key={card.id}>
+                  <Card card={card} />
+                  <Droppable
+                    index={index + 1}
+                    cards={cards ?? []}
+                    columnId={col_id}
+                  />
+                </React.Fragment>
+              ))}
+            </Draggable>
           </CardContent>
         </SCard>
       </Reorder.Item>
