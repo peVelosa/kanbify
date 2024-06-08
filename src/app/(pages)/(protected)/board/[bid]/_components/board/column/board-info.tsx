@@ -3,9 +3,9 @@
 import AllowTo from "../allow-to";
 import EditButton from "../../_actions/edit/edit";
 import Invite from "../../_actions/invite/invite";
-import type { Board } from "@/types/trpc";
+import type { RouterOutput } from "@/types/trpc";
 
-type BoardInfoProps = Omit<NonNullable<Board>, "columns" | "id">;
+type BoardInfoProps = Omit<NonNullable<RouterOutput["boards"]["byId"]>, "columns" | "id">;
 
 export default function BoardInfo({ title, description, createdAt }: BoardInfoProps) {
   return (

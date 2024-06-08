@@ -29,5 +29,4 @@ export const ReorderCardsSchema = z.object({
     id: z.string(),
     cards: z.array(CardSchema),
   }),
-  isSameColumn: z.boolean(),
 });

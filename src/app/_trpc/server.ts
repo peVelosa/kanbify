@@ -1,7 +1,8 @@
-import { createCaller } from "@/server/api/root";
-import { createTRPCContext } from "@/server/api/trpc";
-import { headers } from "next/headers";
 import { cache } from "react";
+import {  createCaller } from "@/server/api/root";
+import { createTRPCContext } from "@/server/api/trpc";
+
+import { headers } from "next/headers";
 
 const createContext = cache(() => {
   const heads = new Headers(headers());
@@ -18,3 +19,4 @@ const createContext = cache(() => {
  * await trpc.boards.all();
  */
 export const api = createCaller(createContext);
+

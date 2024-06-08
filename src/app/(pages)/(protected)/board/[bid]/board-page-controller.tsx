@@ -12,7 +12,7 @@ const BoardPageController = async ({ bid }: BoardPageControllerProps) => {
 
   return (
     <>
-      <BoardPageView board={board} />
+      <BoardPageView boardInitialParamas={board} />
     </>
   );
 };

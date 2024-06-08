@@ -1,10 +1,10 @@
 import Link from "next/link";
 import AcceptInvite from "./_components/accept-invite";
 import { Button } from "@/components/ui/button";
-import type { InviteGet } from "@/types/trpc";
+import type { RouterOutput } from "@/types/trpc";
 
 type InvitePageViewProps = {
-  invite: InviteGet;
+  invite: RouterOutput["boards"]["invite"]["get"];
   iid: string;
 };
 

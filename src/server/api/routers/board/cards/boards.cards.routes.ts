@@ -39,7 +39,9 @@ export const cardsRoutes = {
     }),
   reorder: privateProcedure
     .input(ReorderCardsSchema)
-    .mutation(async ({ ctx, input: { targetColumn, sourceColumn, isSameColumn } }) => {
+    .mutation(async ({ ctx, input: { targetColumn, sourceColumn } }) => {
+      const isSameColumn = sourceColumn.id === targetColumn.id;
+
       try {
         await ctx.db.$transaction(async (db) => {
           for (const element of targetColumn.cards) {

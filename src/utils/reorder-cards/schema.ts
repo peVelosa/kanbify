@@ -14,8 +14,8 @@ export const ReorderCardsSchema = z.object({
   targetColumn: z.object({
     id: z.string(),
     cards: z.array(CardSchema),
-    index: z.number(),
   }),
+  index: z.number(),
 });
 
 export type TReorderCards = z.infer<typeof ReorderCardsSchema>;

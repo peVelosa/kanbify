@@ -4,13 +4,12 @@ import Card from "../card/card";
 import { trpc } from "@/app/_trpc/client";
 import { Card as SCard, CardContent, CardHeader } from "@/components/ui/card";
 import Droppable from "@/components/elements/drag-and-drop/droppable";
-import { Reorder, useDragControls } from "framer-motion";
-import { type Board } from "@/types/trpc";
 import Draggable from "@/components/elements/drag-and-drop/draggable";
-import { useDragAndDropCard } from "@/lib/stores/drag-and-drop-store";
+import { Reorder, useDragControls } from "framer-motion";
+import { type RouterOutput } from "@/types/trpc";
 
 type BoardColumnProps = {
-  column: NonNullable<Board>["columns"][0];
+  column: NonNullable<RouterOutput["boards"]["byId"]>["columns"][0];
 };
 
 const BoardColumn = ({ column }: BoardColumnProps) => {

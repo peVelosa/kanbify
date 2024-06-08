@@ -1,17 +1,28 @@
 "use client";
 
+import { useState } from "react";
 import BoardInfo from "./_components/board/column/board-info";
 import BoardColumn from "./_components/board/column/board-column";
 import { Reorder } from "framer-motion";
-import { useState } from "react";
-import { type Board } from "@/types/trpc";
+import { trpc } from "@/app/_trpc/client";
+import { redirect } from "next/navigation";
+import { type RouterOutput } from "@/types/trpc";
 
 type BoardPageViewProps = {
-  board: NonNullable<Board>;
+  boardInitialParamas: NonNullable<RouterOutput["boards"]["byId"]>;
 };
 
-export default function BoardPageView({ board }: BoardPageViewProps) {
-  const [columns, setColumns] = useState(board.columns);
+export default function BoardPageView({ boardInitialParamas }: BoardPageViewProps) {
+  const { data: board } = trpc.boards.byId.useQuery(
+    { bid: boardInitialParamas.id },
+    {
+      initialData: boardInitialParamas,
+    },
+  );
+
+  const [columns, setColumns] = useState(boardInitialParamas.columns);
+
+  if (!board) redirect("/dashboard");
 
   const info = {
     id: board.id,

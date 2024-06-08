@@ -22,11 +22,14 @@ export default function useReoderCards() {
 
   return trpc.boards.cards.reorder.useMutation({
     mutationKey: ["reorder-cards"],
-    onMutate: async ({ targetColumn, sourceColumn, isSameColumn }) => {
+    onMutate: async ({ targetColumn, sourceColumn }) => {
+
+      const isSameColumn = sourceColumn.id === targetColumn.id;
+
       setColumnsId({
         sourceColumnId: sourceColumn.id,
         targetColumnId: targetColumn.id,
-        isSameColumn,
+        isSameColumn
       });
 
       await Promise.all([
@@ -40,6 +43,7 @@ export default function useReoderCards() {
       const previousCardsTargetColumn = utils.boards.cards.byColumnId.getData({
         col_id: targetColumn.id,
       });
+
       if (!isSameColumn) {
         utils.boards.cards.byColumnId.setData(
           {

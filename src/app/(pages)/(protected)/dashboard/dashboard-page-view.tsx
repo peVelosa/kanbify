@@ -6,9 +6,13 @@ import Tabs from "@/components/elements/tabs/tabs";
 import TabsList from "@/components/elements/tabs/tabs-list";
 import TabsTrigger from "@/components/elements/tabs/tabs-trigger";
 import TabsContent from "@/components/elements/tabs/tabs-content";
-import type { Boards } from "@/types/trpc";
+import type { RouterOutput } from "@/types/trpc";
 
-export default function DashboardPageView({ boards }: { boards: Boards }) {
+type DashboardPageViewProps = {
+  boards: RouterOutput["boards"]["all"];
+};
+
+export default function DashboardPageView({ boards }: DashboardPageViewProps) {
   return (
     <>
       <div className="container mb-8">

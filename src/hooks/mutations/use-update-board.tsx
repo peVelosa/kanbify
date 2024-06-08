@@ -13,7 +13,7 @@ const useUpdateBoard = ({ bid }: UseUpdateBoardProps) => {
   return trpc.boards.update.useMutation({
     mutationKey: ["edit-board", bid],
     onMutate: async (data) => {
-      await utils.boards.all.cancel();
+      await utils.boards.byId.cancel({ bid });
 
       const previousInformation = utils.boards.byId.getData({ bid });
 

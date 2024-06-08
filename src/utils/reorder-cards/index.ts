@@ -6,20 +6,23 @@ export const reorderCards = (props: TReorderCards) => {
     return {
       sourceColumn: props.sourceColumn,
       targetColumn: props.targetColumn,
+      index: props.index,
     };
 
-  const { draggedItem, sourceColumn, targetColumn } = validatedFields.data;
+  const { draggedItem, sourceColumn, targetColumn, index } = validatedFields.data;
 
-  const index = targetColumn.index;
+  const isSameColumn = sourceColumn.id === targetColumn.id;
+
+  const newCards = sourceColumn.cards.filter((card) => card.id !== draggedItem.id);
 
   //same column
-  if (sourceColumn.id === targetColumn.id) {
+  if (isSameColumn) {
     //first item
-    const newCards = sourceColumn.cards.filter((card) => card.id !== draggedItem.id);
     if (index === 0) {
       return {
         sourceColumn,
         targetColumn: { ...targetColumn, cards: changeOrderValue([draggedItem, ...newCards]) },
+        index,
       };
     }
     //last item
@@ -27,6 +30,7 @@ export const reorderCards = (props: TReorderCards) => {
       return {
         sourceColumn,
         targetColumn: { ...targetColumn, cards: changeOrderValue([...newCards, draggedItem]) },
+        index,
       };
     }
     //middle item
@@ -42,19 +46,20 @@ export const reorderCards = (props: TReorderCards) => {
           ...right.filter((card) => card.id !== draggedItem.id),
         ]),
       },
+      index,
     };
   }
 
   //different columns
-  const newSourceCards = sourceColumn.cards.filter((card) => card.id !== draggedItem.id);
   const newTargetCards = targetColumn.cards
     .slice(0, index)
     .concat(draggedItem, targetColumn.cards.slice(index))
     .map((card) => ({ ...card, column_id: targetColumn.id }));
 
   return {
-    sourceColumn: { ...sourceColumn, cards: changeOrderValue(newSourceCards) },
+    sourceColumn: { ...sourceColumn, cards: changeOrderValue(newCards) },
     targetColumn: { ...targetColumn, cards: changeOrderValue(newTargetCards) },
+    index,
   };
 };
 
