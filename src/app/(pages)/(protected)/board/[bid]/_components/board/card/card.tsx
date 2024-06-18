@@ -10,6 +10,7 @@ type CardProps = {
 const Card = ({ card }: CardProps) => {
   const { id: card_id, title, order, column_id, assign_to } = card;
   const setDragItem = useDragAndDropCard((state) => state.setDragItem);
+  const draggedItem = useDragAndDropCard((state) => state.card);
 
   const getAvatarName = () => {
     if (!assign_to?.user?.name) return "AV";
@@ -25,7 +26,7 @@ const Card = ({ card }: CardProps) => {
   return (
     <>
       <SCard
-        className="rounded-md"
+        className={`rounded-md ${draggedItem?.id === card_id ? "bg-slate-200 opacity-70" : ""}`}
         draggable
         onDragStart={() => setDragItem(card)}
       >

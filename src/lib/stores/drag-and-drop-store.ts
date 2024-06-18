@@ -7,7 +7,6 @@ const useDragAndDropCard = create<DragAndDropCard>((set) => ({
     id: "",
     cards: [],
   },
-
   index: null,
   setIndex: (index) => set({ index }),
   setDragItem: (card) => set({ card }),

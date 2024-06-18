@@ -1,4 +1,4 @@
-import { useState, type DragEvent } from "react";
+import { useEffect, useMemo, useState, type DragEvent } from "react";
 import useReoderCards from "@/hooks/mutations/use-reorder-cards";
 import { useDragAndDropCard } from "@/lib/stores/drag-and-drop-store";
 import { reorderCards } from "@/utils/reorder-cards";
@@ -10,19 +10,31 @@ type DroppableProps = {
   columnId: string;
 };
 
+const wait = async () => {
+  return new Promise((resolve, _) => {
+    setTimeout(() => {
+      resolve({});
+    }, 100);
+  });
+};
+
 const useDrop = ({ index, cards, columnId }: DroppableProps) => {
   const [isVisible, setIsVisible] = useState(false);
-  const { draggedItem, sourceColumn, reset } = useDragAndDropCard((state) => ({
+  const [isDragging, setIsDragging] = useState(false);
+
+  const { draggedItem, sourceColumn } = useDragAndDropCard((state) => ({
     draggedItem: state.card,
     sourceColumn: state.sourceColumn,
-    reset: state.reset,
   }));
 
   const { mutate } = useReoderCards();
 
+  useEffect(() => {
+    wait().then(() => setIsDragging(!!draggedItem));
+  }, [draggedItem]);
+
   const handleDrop = (e: DragEvent) => {
     e.preventDefault();
-    reset();
     setIsVisible(false);
     const targetColumn = { id: columnId, cards };
 
@@ -41,7 +53,7 @@ const useDrop = ({ index, cards, columnId }: DroppableProps) => {
   const handleDragEnter = () => setIsVisible(true);
   const handleDragLeave = () => setIsVisible(false);
 
-  return { handleDragEnter, handleDragLeave, handleDrop, isVisible };
+  return { handleDragEnter, handleDragLeave, handleDrop, isVisible, isDragging };
 };
 
 export default useDrop;
