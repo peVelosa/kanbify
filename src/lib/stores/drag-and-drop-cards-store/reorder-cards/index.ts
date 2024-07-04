@@ -25,6 +25,7 @@ export const reorderCards = (props: TReorderCards) => {
         index,
       };
     }
+
     //last item
     if (index === targetColumn.cards.length) {
       return {
@@ -33,6 +34,7 @@ export const reorderCards = (props: TReorderCards) => {
         index,
       };
     }
+
     //middle item
     const left = targetColumn.cards.slice(0, index);
     const right = targetColumn.cards.slice(index);

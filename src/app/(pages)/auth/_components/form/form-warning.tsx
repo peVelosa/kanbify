@@ -1,6 +1,6 @@
 import { FaExclamationTriangle } from "react-icons/fa";
 
-const FormWarning = ({ warning }: { warning: string }) => {
+const FormWarning = ({ warning }: { warning?: string | null }) => {
   if (!warning) return null;
 
   return (

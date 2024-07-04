@@ -7,13 +7,14 @@ import * as z from "zod";
 
 type verificationEmailProps = {
   email: string;
+  isDevelopment: boolean;
 };
 
 const EmailSchema = z.object({
   email: z.string().email().toLowerCase(),
 });
 
-export const verificationEmail = async ({ email }: verificationEmailProps) => {
+export const verificationEmail = async ({ email, isDevelopment }: verificationEmailProps) => {
   const validatedFields = EmailSchema.safeParse({
     email,
   });
@@ -53,6 +54,8 @@ export const verificationEmail = async ({ email }: verificationEmailProps) => {
   });
 
   if (!verification) return null;
+
+  if (isDevelopment) return new Date(verification.createdAt.getTime() + 1000 * 60);
 
   await send({
     subject: "Verification link",

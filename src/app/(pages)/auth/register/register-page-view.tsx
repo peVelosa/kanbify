@@ -1,5 +1,9 @@
 "use client";
 
+import PasswordInput from "@/app/(pages)/auth/_components/form/password-input";
+import FormError from "@/app/(pages)/auth/_components/form/form-error";
+import FormSuccess from "@/app/(pages)/auth/_components/form/form-success";
+import FormWarning from "@/app/(pages)/auth/_components/form/form-warning";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -11,63 +15,24 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-
-import PasswordInput from "@/app/(pages)/auth/_components/form/password-input";
-import { useEffect, useState } from "react";
 import Requirements from "../_components/form/requirements";
-import FormError from "@/app/(pages)/auth/_components/form/form-error";
-import FormSuccess from "@/app/(pages)/auth/_components/form/form-success";
-import FormWarning from "@/app/(pages)/auth/_components/form/form-warning";
-import { trpc } from "@/app/_trpc/client";
-import {
-  RegisterSchema,
-  type TRegisterSchema,
-  RegexEspecialCharacter,
-  RegexLowerCase,
-  RegexNumber,
-  RegexUpperCase,
-} from "@/server/api/routers/auth/schemas";
+import type { TRegisterSchema, TPasswordRequirements } from "@/server/api/routers/auth/schemas";
+import type { UseFormReturn } from "react-hook-form";
+import type { RouterOutput } from "@/types/trpc";
 
-export default function RegisterPageView() {
-  const { mutateAsync: register } = trpc.auth.register.useMutation();
+type RegisterPageViewProps = {
+  onSubmit: (values: TRegisterSchema) => void;
+  requirements: TPasswordRequirements;
+  form: UseFormReturn<TRegisterSchema, any, undefined>;
+  message: RouterOutput["auth"]["register"] | null;
+};
 
-  const [message, setMessage] = useState<any>(null);
-  const [requirements, setRequirements] = useState({
-    upperCase: false,
-    lowerCase: false,
-    number: false,
-    specialCharacter: false,
-  });
-
-  const form = useForm<TRegisterSchema>({
-    resolver: zodResolver(RegisterSchema),
-    defaultValues: {
-      name: "",
-      email: "",
-      password: "",
-      confirm_password: "",
-    },
-  });
-
-  const password = form.watch("password");
-
-  useEffect(() => {
-    setRequirements({
-      upperCase: RegexUpperCase.test(password),
-      lowerCase: RegexLowerCase.test(password),
-      number: RegexNumber.test(password),
-      specialCharacter: RegexEspecialCharacter.test(password),
-    });
-  }, [password]);
-
-  const onSubmit = async (values: TRegisterSchema) => {
-    setMessage({ error: "", success: "" });
-    const result = await register(values);
-    setMessage(result);
-  };
-
+export default function RegisterPageView({
+  form,
+  message,
+  onSubmit,
+  requirements,
+}: RegisterPageViewProps) {
   return (
     <Form {...form}>
       <form

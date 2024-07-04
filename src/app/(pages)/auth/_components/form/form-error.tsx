@@ -1,6 +1,6 @@
 import { FaExclamationTriangle } from "react-icons/fa";
 
-const FormError = ({ error }: { error: string }) => {
+const FormError = ({ error }: { error?: string | null }) => {
   if (!error) return null;
 
   return (

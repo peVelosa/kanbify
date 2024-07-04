@@ -1,6 +1,6 @@
 import { Card as SCard, CardHeader } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useDragAndDropCard } from "@/lib/stores/drag-and-drop-store";
+import { useDragAndDropCard } from "@/lib/stores";
 import { type RouterOutput } from "@/types/trpc";
 
 type CardProps = {

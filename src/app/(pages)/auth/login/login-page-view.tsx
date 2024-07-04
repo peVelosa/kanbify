@@ -1,5 +1,9 @@
 "use client";
 
+import ResendVerificationEmail from "@/app/(pages)/auth/_components/resend-verification-email";
+import PasswordInput from "@/app/(pages)/auth/_components/form/password-input";
+import FormError from "@/app/(pages)/auth/_components/form/form-error";
+import FormWarning from "@/app/(pages)/auth/_components/form/form-warning";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -10,41 +14,17 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import PasswordInput from "@/app/(pages)/auth/_components/form/password-input";
-import { signIn } from "@/app/actions/login";
-import FormError from "@/app/(pages)/auth/_components/form/form-error";
-import FormWarning from "@/app/(pages)/auth/_components/form/form-warning";
-import { useState } from "react";
-import ResendVerificationEmail from "../_components/resend-verification-email";
-import { useSearchParams } from "next/navigation";
-import { trpc } from "@/app/_trpc/client";
-import { LoginSchema, type TLoginSchema } from "@/server/api/routers/auth/schemas";
+import { type TLoginSchema } from "@/server/api/routers/auth/schemas";
+import { type UseFormReturn } from "react-hook-form";
+import { type RouterOutput } from "@/types/trpc";
 
-export default function LoginForm() {
-  const searchParams = useSearchParams();
+type LoginFormProps = {
+  onSubmit: (values: TLoginSchema) => void;
+  form: UseFormReturn<TLoginSchema, any, undefined>;
+  message: RouterOutput["auth"]["login"] | null;
+};
 
-  const callbackEmail = searchParams.get("callbackEmail");
-
-  const { mutateAsync: login } = trpc.auth.login.useMutation();
-
-  const [message, setMessage] = useState<any>(null);
-
-  const form = useForm<TLoginSchema>({
-    resolver: zodResolver(LoginSchema),
-    defaultValues: {
-      email: callbackEmail || "",
-      password: "",
-    },
-  });
-
-  const onSubmit = async (values: TLoginSchema) => {
-    const result = await login(values);
-    if (!result.success) return setMessage(result);
-    await signIn(values);
-  };
-
+export default function LoginForm({ form, message, onSubmit }: LoginFormProps) {
   return (
     <>
       <Form {...form}>

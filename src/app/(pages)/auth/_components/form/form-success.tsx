@@ -1,6 +1,6 @@
 import { FaCheckCircle } from "react-icons/fa";
 
-const FormSuccess = ({ success }: { success: string }) => {
+const FormSuccess = ({ success }: { success?: string | null }) => {
   if (!success) return null;
 
   return (

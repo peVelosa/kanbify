@@ -1,5 +1,5 @@
 import React from "react";
-import { useDragAndDropCard } from "@/lib/stores/drag-and-drop-store";
+import { useDragAndDropCard } from "@/lib/stores";
 import type { RouterOutput } from "@/types/trpc";
 
 type DraggableProps = {
@@ -14,12 +14,12 @@ const Draggable = ({ children, cards, columnId }: DraggableProps) => {
 
   const handleDragStart = (e: any) => {
     e.stopPropagation();
+
     if (!cards) return;
     setSourceColumn({ id: columnId, cards });
   };
-  const handleDragEnd = () => {
-    reset();
-  };
+
+  const handleDragEnd = () => reset();
 
   return (
     <div

@@ -25,6 +25,8 @@ export const authRoutes = {
     return { success: true };
   }),
   register: publicProcedure.input(RegisterSchema).mutation(async ({ ctx, input }) => {
+    const isDevelopment = process.env.NODE_ENV === "development";
+
     const { name, email, password } = input;
 
     const existingUser = await ctx.db.user.findUnique({
@@ -33,30 +35,31 @@ export const authRoutes = {
       },
     });
 
-    if (!!existingUser?.emailVerified) return { error: "User already exists" };
-
-    if (!existingUser?.emailVerified) {
+    if (!!existingUser) {
+      if (existingUser.emailVerified) return { error: "User already exists" };
       await verificationEmail({
         email,
+        isDevelopment,
       });
       return { warning: "Verification email sent" };
     }
 
-    const saltRounds = 10;
-
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
-
     try {
+      const saltRounds = 10;
+
+      const hashedPassword = await bcrypt.hash(password, saltRounds);
       await ctx.db.user.create({
         data: {
           name,
           password: hashedPassword,
           email,
+          emailVerified: isDevelopment ? new Date() : null,
         },
       });
 
       await verificationEmail({
         email,
+        isDevelopment,
       });
 
       return { success: "Verification email sent" };

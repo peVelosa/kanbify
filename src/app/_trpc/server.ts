@@ -1,5 +1,5 @@
 import { cache } from "react";
-import {  createCaller } from "@/server/api/root";
+import { createCaller } from "@/server/api/root";
 import { createTRPCContext } from "@/server/api/trpc";
 
 import { headers } from "next/headers";
@@ -16,7 +16,6 @@ const createContext = cache(() => {
 /**
  * Server-side calls for the tRPC API.
  * @example
- * await trpc.boards.all();
+ * await api.boards.all();
  */
 export const api = createCaller(createContext);
-
