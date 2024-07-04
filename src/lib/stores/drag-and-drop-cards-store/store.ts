@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { DragAndDropCard } from "./types";
+import type { DragAndDropCard } from "./type";
 
 const useDragAndDropCard = create<DragAndDropCard>((set) => ({
   card: null,
