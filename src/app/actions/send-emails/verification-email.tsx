@@ -7,14 +7,17 @@ import * as z from "zod";
 
 type verificationEmailProps = {
   email: string;
-  isDevelopment: boolean;
+  isDevelopment?: boolean;
 };
 
 const EmailSchema = z.object({
   email: z.string().email().toLowerCase(),
 });
 
-export const verificationEmail = async ({ email, isDevelopment }: verificationEmailProps) => {
+export const verificationEmail = async ({
+  email,
+  isDevelopment = false,
+}: verificationEmailProps) => {
   const validatedFields = EmailSchema.safeParse({
     email,
   });
