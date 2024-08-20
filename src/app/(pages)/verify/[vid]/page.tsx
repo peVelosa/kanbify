@@ -12,15 +12,15 @@ export default async function VerificationPage({ params: { vid } }: { params: { 
     email: verification.identifier,
   });
 
-  if (!user.verified)
+  if (!user.verified) {
+    await api.user.verifyEmail.verify({ email: verification.identifier });
     return (
       <VerifyEmailModel
         status={"firstTimeVerified"}
         callbackEmail={user.email}
       />
     );
-
-  await api.user.verifyEmail.verify({ email: verification.identifier });
+  }
 
   return (
     <VerifyEmailModel
