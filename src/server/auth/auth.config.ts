@@ -9,7 +9,6 @@ export const authConfig = {
     Credentials({
       async authorize(credentials, _) {
         const validatedFields = LoginSchema.safeParse(credentials);
-
         if (!validatedFields.success) return null;
 
         const { email, password } = validatedFields.data;
