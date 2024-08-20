@@ -17,9 +17,9 @@ export default function useNewBoard() {
         undefined,
         (old: typeof previousBoards) =>
           ({
-            boardsCollaborated: [...old?.boardsCollaborated!],
+            boardsCollaborated: [...(old?.boardsCollaborated ?? [])],
             boardsOwned: [
-              ...old?.boardsOwned!,
+              ...(old?.boardsOwned ?? []),
               {
                 id: "temp-id",
                 title: data.title,
@@ -50,7 +50,6 @@ export default function useNewBoard() {
       });
     },
     onSettled: () => {
-      console.log("refetching");
       utils.boards.all.invalidate();
     },
   });

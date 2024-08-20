@@ -7,12 +7,17 @@ import TabsList from "@/components/elements/tabs/tabs-list";
 import TabsTrigger from "@/components/elements/tabs/tabs-trigger";
 import TabsContent from "@/components/elements/tabs/tabs-content";
 import type { RouterOutput } from "@/types/trpc";
+import { trpc } from "@/app/_trpc/client";
 
 type DashboardPageViewProps = {
   boards: RouterOutput["boards"]["all"];
 };
 
 export default function DashboardPageView({ boards }: DashboardPageViewProps) {
+  const { data } = trpc.boards.all.useQuery(undefined, {
+    initialData: boards,
+  });
+
   return (
     <>
       <div className="container mb-8">
@@ -28,12 +33,12 @@ export default function DashboardPageView({ boards }: DashboardPageViewProps) {
         </TabsList>
         <section className="mt-4 grid grid-cols-[repeat(auto-fill_,minmax(250px_,1fr))] gap-4">
           <TabsContent value="owned">
-            {boards?.boardsOwned?.length === 0 && (
+            {data?.boardsOwned?.length === 0 && (
               <p className="text-sm">
                 You don&rsquo;t have any boards yet. Create a new board to get started.
               </p>
             )}
-            {boards?.boardsOwned?.map((board) => (
+            {data?.boardsOwned?.map((board) => (
               <BoardCard
                 key={board.id}
                 {...board}
@@ -41,10 +46,10 @@ export default function DashboardPageView({ boards }: DashboardPageViewProps) {
             ))}
           </TabsContent>
           <TabsContent value="collaboration">
-            {boards?.boardsCollaborated?.length === 0 && (
+            {data?.boardsCollaborated?.length === 0 && (
               <p className="text-sm">You are not collaborating on any boards.</p>
             )}
-            {boards?.boardsCollaborated?.map((board) => (
+            {data?.boardsCollaborated?.map((board) => (
               <BoardCard
                 key={board.id}
                 {...board}
